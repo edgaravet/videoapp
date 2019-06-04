@@ -33,16 +33,15 @@ class Registration extends React.Component {
           <hr />
 
           <p>
-            By creating an account you agree to our{" "}
-            <a href="#">Terms & Privacy</a>.
+            By creating an account you agree to our <a>Terms & Privacy</a>.
           </p>
           <button type="submit" class="registerbtn">
             Register
           </button>
 
-          <div class="container signin">
+          <div className="container signin">
             <p>
-              Already have an account? <a href="#">Sign in</a>.
+              Already have an account? <a>Sign in</a>.
             </p>
           </div>
         </form>
