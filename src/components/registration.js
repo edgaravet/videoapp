@@ -1,6 +1,6 @@
 import React from "react";
 import "../App.css";
-import fire from "./firebase";
+import fire from "./config";
 
 class Registration extends React.Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class Registration extends React.Component {
     });
   }
 
-  login(e) {
+  registr(e) {
     e.preventDefault();
     fire
       .auth()
@@ -71,7 +71,7 @@ class Registration extends React.Component {
             />
 
             <button
-              onClick={this.login.bind(this)}
+              onClick={this.registr.bind(this)}
               type="button"
               className="registerbtn"
             >

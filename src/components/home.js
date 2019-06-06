@@ -1,15 +1,15 @@
 import React from "react";
 import "../App.css";
-
-
-
-
+import Youtube from "./youtube";
 
 class Home extends React.Component {
   render() {
     return (
       <div className="container">
-        <h1>You Are Home</h1>
+        <center>
+          <h1>Your Are Home</h1>
+        </center>
+         <Youtube />
       </div>
     );
   }
