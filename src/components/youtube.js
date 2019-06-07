@@ -6,7 +6,7 @@ class Youtube extends React.Component {
   componentDidMount() {
     var that = this;
     var API_key = "AIzaSyCQqqyHQ6JfQ-9uhfxp_ze_pzvDHhJrX4M";
-    var channelID = "UCJvCkmZbqe1dUysO3oIqojw";
+    var channelID = "UC17pt_Hz-hrpgtX8QS7zdPg";
     var maxResults = 20;
     var url =
       "https://www.googleapis.com/youtube/v3/search?key=" +

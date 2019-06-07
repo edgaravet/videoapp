@@ -7,14 +7,12 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Follows from "./follows";
 import Login from "./login";
 
-
 class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       user: {}
     };
- 
   }
 
   componentDidMount() {
@@ -44,7 +42,7 @@ class Header extends React.Component {
       });
   };
 
-  logButton = e => {        
+  logButton = e => {
     if (this.state.user.email != null) {
       return (
         <a
@@ -57,15 +55,13 @@ class Header extends React.Component {
       );
     } else {
       return (
-        
         <Link className="registerbtn" to="/login">
           Log In
         </Link>
-      
-      )
+        
+      );
     }
-  }
-  
+  };
 
   render() {
     return (
@@ -89,7 +85,7 @@ class Header extends React.Component {
             </li>
             <li>{this.logButton()}</li>
 
-            <li>{this.state.user.email}</li>
+            <li>{  this.state.user.email}</li>
           </ul>
 
           <div align="right" className="search">
