@@ -1,7 +1,10 @@
 import React from "react";
 
 class Youtube extends React.Component {
-  state = { videos: [], loading: true };
+  constructor(props) {
+    super(props);
+    this.state = { videos: [], loading: true };
+  }
 
   componentDidMount() {
     var that = this;
@@ -32,19 +35,33 @@ class Youtube extends React.Component {
   }
 
   render() {
-    const { loading, videos } = this.state;
+    const { loading } = this.state;
 
     if (loading) {
       return null;
     }
 
     return this.state.videos.map((item, index) => (
-      <div className="youtube">
-        <iframe
-          width="420"
-          height="315"
-          src={`https://www.youtube.com/embed/${item.id.videoId}`}
-        />
+      <div className="col-4">
+        <div className="thumbnail">
+          <div className="youtube">
+            <iframe
+              title="myFrame"
+              width="420"
+              height="315"
+              src={`https://www.youtube.com/embed/${item.id.videoId}`}
+            />
+          </div>
+          <div className="caption">
+            <div className="row">
+              <div className="col-xs-12 col-md-6">
+                <button className="btn btn-success" onClick={this.followFunc}>
+                  Follow
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     ));
   }

@@ -6,7 +6,8 @@ class Login extends React.Component {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      message: null
     };
   }
   handleChange(e) {
@@ -14,17 +15,20 @@ class Login extends React.Component {
       [e.target.name]: e.target.value
     });
   }
-
+  
   sign = e => {
     e.preventDefault();
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(u => {
-         
+        this.props.history.push("/home");
       })
       .catch(error => {
-        console.log(error);
+        this.setState({
+          message : error.message
+        });
+         console.log(error)
       });
   };
 
@@ -32,6 +36,7 @@ class Login extends React.Component {
     return (
       <div className="form_group">
         <form>
+        <label className="errorLable">{this.state.message}</label>
           <input
             type="text"
             placeholder="Enter Email"

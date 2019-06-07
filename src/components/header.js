@@ -20,13 +20,10 @@ class Header extends React.Component {
   }
   authListener() {
     fire.auth().onAuthStateChanged(user => {
-      console.log(user);
       if (user) {
         this.setState({ user });
-        localStorage.setItem("user", user.uid);
       } else {
         this.setState({ user: " " });
-        localStorage.removeItem("user");
       }
     });
   }
@@ -36,29 +33,35 @@ class Header extends React.Component {
     fire
       .auth()
       .signOut()
-      .catch(function(err) {
-        // Handle errors
-        this.logButton();
-      });
+      .then(u => {})
+      .catch(function(err) {});
+    this.logButton();
+  };
+
+  regButton = e => {
+    if (this.state.user.email == null) {
+      return (
+        <li>
+          <Link className="registerbtn" to="/registration">
+            Registration
+          </Link>
+        </li>
+      );
+    }
   };
 
   logButton = e => {
     if (this.state.user.email != null) {
       return (
-        <a
-          onClick={this.logout.bind(this)}
-          type="button"
-          className="registerbtn"
-        >
+        <button onClick={this.logout.bind(this)} className="registerbtn">
           Logout
-        </a>
+        </button>
       );
     } else {
       return (
         <Link className="registerbtn" to="/login">
           Log In
         </Link>
-        
       );
     }
   };
@@ -69,13 +72,8 @@ class Header extends React.Component {
         <div className="header">
           <ul>
             <li>
-              <Link className="registerbtn" to="/">
+              <Link className="registerbtn" to="/home">
                 Home
-              </Link>
-            </li>
-            <li>
-              <Link className="registerbtn" to="/registration">
-                Registration
               </Link>
             </li>
             <li>
@@ -83,19 +81,18 @@ class Header extends React.Component {
                 Follows
               </Link>
             </li>
+            {this.regButton()}
             <li>{this.logButton()}</li>
-
-            <li>{  this.state.user.email}</li>
+            <li>{this.state.user.email}</li>
           </ul>
-
           <div align="right" className="search">
             <input />
             <button type="submit">search</button>
           </div>
-
           <Route exact path="/" component={Home} />
-          <Route path="/registration" component={Registration} />
+          <Route path="/home" component={Home} />
           <Route path="/follows" component={Follows} />
+          <Route path="/registration" component={Registration} />
           <Route path="/login" component={Login} />
         </div>
       </Router>

@@ -23,7 +23,9 @@ class Registration extends React.Component {
     fire
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {})
+      .then(u => {
+        this.props.history.push("/home");
+      })
       .catch(error => {
         console.log(error);
       });
