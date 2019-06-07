@@ -1,15 +1,16 @@
 import React from "react";
 import "./App.css";
 import Header from "./components/header";
-import Content from "./components/content";
+import "@firebase/storage";
 
-function App() {
-  return (
-    <div className="App">
-      <Header />
-      <Content />
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <div className="App">
+        <Header />
+      </div>
+    );
+  }
 }
 
 export default App;
