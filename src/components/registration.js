@@ -6,6 +6,8 @@ class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstname: "",
+      lastname: "",
       email: "",
       password: "",
       confirm_password: ""
@@ -37,8 +39,24 @@ class Registration extends React.Component {
         <div className="form_group">
           <form>
             <label>
-              <b>Email</b>
+              <b>Registration</b>
             </label>
+            <input
+              onChange={this.handleChange.bind(this)}
+              value={this.state.firstname}
+              type="text"
+              placeholder="Enter firstname"
+              name="firstname"
+              required
+            />
+            <input
+              onChange={this.handleChange.bind(this)}
+              value={this.state.lastname}
+              type="text"
+              placeholder="Enter lastname"
+              name="lastname"
+              required
+            />
             <input
               onChange={this.handleChange.bind(this)}
               value={this.state.email}

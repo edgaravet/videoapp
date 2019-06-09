@@ -11,7 +11,9 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {}
+      user: {},
+      firstname: "",
+      lastname: ""
     };
   }
 
@@ -39,6 +41,7 @@ class Header extends React.Component {
   };
 
   regButton = e => {
+   
     if (this.state.user.email == null) {
       return (
         <li>
@@ -89,6 +92,7 @@ class Header extends React.Component {
             <input />
             <button type="submit">search</button>
           </div>
+
           <Route exact path="/" component={Home} />
           <Route path="/home" component={Home} />
           <Route path="/follows" component={Follows} />

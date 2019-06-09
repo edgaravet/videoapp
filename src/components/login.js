@@ -15,7 +15,7 @@ class Login extends React.Component {
       [e.target.name]: e.target.value
     });
   }
-  
+
   sign = e => {
     e.preventDefault();
     fire
@@ -26,9 +26,9 @@ class Login extends React.Component {
       })
       .catch(error => {
         this.setState({
-          message : error.message
+          message: error.message
         });
-         console.log(error)
+        console.log(error);
       });
   };
 
@@ -36,7 +36,7 @@ class Login extends React.Component {
     return (
       <div className="form_group">
         <form>
-        <label className="errorLable">{this.state.message}</label>
+          <label className="errorLable">{this.state.message}</label>
           <input
             type="text"
             placeholder="Enter Email"

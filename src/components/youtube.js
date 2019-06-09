@@ -1,10 +1,35 @@
 import React from "react";
+import fire from "./config";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class Youtube extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { videos: [], loading: true };
+    this.state = { videos: [], loading: true, user: {} };
   }
+
+  componentDidMount() {
+    this.authListener();
+  }
+  authListener() {
+    fire.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user });
+      } else {
+        this.setState({ user: " " });
+      }
+    });
+  }
+
+  followFunc = (e) => {
+    fire.auth().onAuthStateChanged(user => {
+      if (user) {
+        console.log(user);
+      } else {
+  
+      }
+    });
+  };
 
   componentDidMount() {
     var that = this;
@@ -55,7 +80,10 @@ class Youtube extends React.Component {
           <div className="caption">
             <div className="row">
               <div className="col-xs-12 col-md-6">
-                <button className="btn btn-success" onClick={this.followFunc}>
+                <button
+                  className="btn btn-success"
+                  onClick={this.followFunc.bind(this)}
+                >
                   Follow
                 </button>
               </div>
