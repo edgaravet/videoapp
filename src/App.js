@@ -7,7 +7,8 @@ import "@firebase/storage";
 class App extends React.Component {
   render() {
     return (
-      <div className="App">
+ 
+      <div id="root">
         <Header />
       </div>
     );

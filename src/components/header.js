@@ -84,6 +84,7 @@ class Header extends React.Component {
                 Follows
               </Link>
             </li>
+            
             {this.regButton()}
             <li>{this.logButton()}</li>
             <li>{this.state.user.email}</li>

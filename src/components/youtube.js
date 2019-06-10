@@ -1,17 +1,20 @@
-import React from "react";
+import React, { Component } from "react";
 import fire from "./config";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import Firebase from "firebase";
 class Youtube extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { videos: [], loading: true, user: {} };
+    this.state = {
+      videos: [],
+      fVideos:[],
+      loading: true,
+      user: {},
+    };
   }
 
-  componentDidMount() {
-    this.authListener();
-  }
+
   authListener() {
+    
     fire.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({ user });
@@ -21,17 +24,29 @@ class Youtube extends React.Component {
     });
   }
 
-  followFunc = (e) => {
-    fire.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log(user);
-      } else {
   
-      }
-    });
+  createProject = (event) => {
+
+ 
+    if(this.state.user){
+       this.state.fVideos.push(event.target.id, this.state.user.uid)
+       console.log('asd', this.state.fVideos) 
+    }
+    
+    fire.database()
+        .ref("/")
+        .set(this.state.fVideos);
+        console.log("fff", this.state.fVideos);
+      console.log("DATA SAVED");
+    
+    // console.log('event', event.target.id)
+    // console.log('suser', this.state.user.uid)
+    // console.log('u_id', this.state.u_id)
   };
 
   componentDidMount() {
+    this.authListener();
+  
     var that = this;
     var API_key = "AIzaSyCQqqyHQ6JfQ-9uhfxp_ze_pzvDHhJrX4M";
     var channelID = "UC17pt_Hz-hrpgtX8QS7zdPg";
@@ -61,6 +76,7 @@ class Youtube extends React.Component {
 
   render() {
     const { loading } = this.state;
+    const { auth } = this.props;
 
     if (loading) {
       return null;
@@ -82,7 +98,8 @@ class Youtube extends React.Component {
               <div className="col-xs-12 col-md-6">
                 <button
                   className="btn btn-success"
-                  onClick={this.followFunc.bind(this)}
+                  id={item.id.videoId}
+                  onClick={this.createProject.bind(this)}
                 >
                   Follow
                 </button>
