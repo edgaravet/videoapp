@@ -89,9 +89,6 @@ class Header extends React.Component {
             <li>{this.logButton()}</li>
             <li>{this.state.user.email}</li>
           </ul>
-          <div align="right" className="search">
-            <input />
-            <button type="submit">search</button>
           </div>
 
           <Route exact path="/" component={Home} />
@@ -99,7 +96,7 @@ class Header extends React.Component {
           <Route path="/follows" component={Follows} />
           <Route path="/registration" component={Registration} />
           <Route path="/login" component={Login} />
-        </div>
+        
       </Router>
     );
   }

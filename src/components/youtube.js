@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import fire from "./config";
-import Firebase from "firebase";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 class Youtube extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       videos: [],
-      fVideos:[],
+      fVideos: [],
       loading: true,
-      user: {},
+      user: {}
     };
   }
 
-
   authListener() {
-    
     fire.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({ user });
@@ -24,32 +23,28 @@ class Youtube extends React.Component {
     });
   }
 
-  
-  createProject = (event) => {
+  createFollow = event => {
+    if (this.state.user.uid != null) {
+      this.state.fVideos.push({
+        u_id: this.state.user.uid,
+        v_id: event.target.id
+      });
 
- 
-    if(this.state.user){
-       this.state.fVideos.push(event.target.id, this.state.user.uid)
-       console.log('asd', this.state.fVideos) 
-    }
-    
-    fire.database()
-        .ref("/")
+      fire
+        .database()
+        .ref("/videos/" + this.state.user.uid)
         .set(this.state.fVideos);
-        console.log("fff", this.state.fVideos);
-      console.log("DATA SAVED");
-    
-    // console.log('event', event.target.id)
-    // console.log('suser', this.state.user.uid)
-    // console.log('u_id', this.state.u_id)
+    } else {
+      
+    }
   };
 
   componentDidMount() {
     this.authListener();
-  
     var that = this;
-    var API_key = "AIzaSyCQqqyHQ6JfQ-9uhfxp_ze_pzvDHhJrX4M";
+    var API_key = "AIzaSyCE6VhWsBQuikKPh0jsdrixVDOMq_1GxGk";
     var channelID = "UC17pt_Hz-hrpgtX8QS7zdPg";
+
     var maxResults = 20;
     var url =
       "https://www.googleapis.com/youtube/v3/search?key=" +
@@ -77,11 +72,9 @@ class Youtube extends React.Component {
   render() {
     const { loading } = this.state;
     const { auth } = this.props;
-
     if (loading) {
       return null;
     }
-
     return this.state.videos.map((item, index) => (
       <div className="col-4">
         <div className="thumbnail">
@@ -99,7 +92,7 @@ class Youtube extends React.Component {
                 <button
                   className="btn btn-success"
                   id={item.id.videoId}
-                  onClick={this.createProject.bind(this)}
+                  onClick={this.createFollow.bind(this)}
                 >
                   Follow
                 </button>
