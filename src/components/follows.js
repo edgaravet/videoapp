@@ -34,12 +34,14 @@ class Follows extends React.Component {
 
   
   render() {
+    
     const { loading } = this.state;
     if (loading) {
       return null;
     }
-    return this.state.videos.map((item, index) => (
-      <div className="col-4">
+    return <div>
+    {this.state.videos.map((item, index) => (
+      <div key={index} className="col-4">
         <div className="thumbnail">
           <div className="youtube">
             <iframe
@@ -51,7 +53,9 @@ class Follows extends React.Component {
           </div>
         </div>
       </div>
-    ));
+    ))
+    }
+    </div>
   }
 }
 
