@@ -1,6 +1,16 @@
 import React, { Component } from "react";
 import fire from "./config";
+import {
+  MDBContainer,
+  MDBBtn,
+  MDBModal,
+  MDBModalBody,
+  MDBModalHeader,
+  MDBModalFooter
+} from "mdbreact";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import Login from "./login";
 
 class Youtube extends React.Component {
   constructor(props) {
@@ -9,7 +19,8 @@ class Youtube extends React.Component {
       videos: [],
       fVideos: [],
       loading: true,
-      user: {}
+      user: {},
+      modal: false
     };
   }
 
@@ -22,6 +33,19 @@ class Youtube extends React.Component {
       }
     });
   }
+  toggle = () => {
+    this.setState({
+      modal: !this.state.modal
+    });
+  };
+
+  log = () => {
+    return (window.location.href = "/login");
+  };
+
+  signUp = () => {
+    return (window.location.href = "/registration");
+  };
 
   createFollow = event => {
     if (this.state.user.uid != null) {
@@ -35,7 +59,9 @@ class Youtube extends React.Component {
         .ref("/videos/" + this.state.user.uid)
         .set(this.state.fVideos);
     } else {
-      
+      this.setState({
+        modal: !this.state.modal
+      });
     }
   };
 
@@ -75,33 +101,68 @@ class Youtube extends React.Component {
     if (loading) {
       return null;
     }
-    return this.state.videos.map((item, index) => (
-      <div className="col-4">
-        <div className="thumbnail">
-          <div className="youtube">
-            <iframe
-              title="myFrame"
-              width="420"
-              height="315"
-              src={`https://www.youtube.com/embed/${item.id.videoId}`}
-            />
-          </div>
-          <div className="caption">
-            <div className="row">
-              <div className="col-xs-12 col-md-6">
-                <button
-                  className="btn btn-success"
-                  id={item.id.videoId}
-                  onClick={this.createFollow.bind(this)}
-                >
-                  Follow
-                </button>
+    return (
+      <div className="row">
+        {this.state.videos.map((item, index) => (
+          <div className="col-4">
+            <div className="thumbnail">
+              <div className="border">
+                <iframe
+                  title="myFrame"
+                  width="100%"
+                  src={`https://www.youtube.com/embed/${item.id.videoId}`}
+                />
+              </div>
+              <div className="caption">
+                <div className="row">
+                  <div className="col-xs-12 col-md-6">
+                    {(() => {
+                      if (this.state.user.uid != null) {
+                        return (
+                          <button
+                            className="btn btn-success"
+                            id={item.id.videoId}
+                            onClick={this.createFollow.bind(this)}
+                          >
+                            Follow
+                          </button>
+                        );
+                      } else {
+                        return (
+                          <MDBBtn
+                            history={this.props.history}
+                            className="btn btn-success"
+                            onClick={this.toggle}
+                          >
+                            Follows
+                          </MDBBtn>
+                        );
+                      }
+                    })()}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        ))}
+        <MDBContainer className="ReactModal__Overlay">
+          <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
+            <MDBModalBody> Please Log In or Registration</MDBModalBody>
+            <button className="registerbtn" onClick={this.log}>
+              Log In{" "}
+            </button>
+            <button className="registerbtn" onClick={this.signUp}>
+              Registration{" "}
+            </button>
+            <MDBModalFooter>
+              <MDBBtn color="secondary" onClick={this.toggle}>
+                Close
+              </MDBBtn>
+            </MDBModalFooter>
+          </MDBModal>
+        </MDBContainer>
       </div>
-    ));
+    );
   }
 }
 

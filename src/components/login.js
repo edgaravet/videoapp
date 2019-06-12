@@ -10,6 +10,10 @@ class Login extends React.Component {
       message: null
     };
   }
+
+  regist(e) {
+    this.props.history.push("/registration");
+  }
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
@@ -34,33 +38,38 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="form_group">
-        <form>
-          <label className="errorLable">{this.state.message}</label>
-          <input
-            type="text"
-            placeholder="Enter Email"
-            name="email"
-            onChange={this.handleChange.bind(this)}
-            value={this.state.email}
-          />
+      <div className="container">
+        <div className="form_group">
+          <form>
+            <label className="errorLable">{this.state.message}</label>
+            <input
+              type="text"
+              placeholder="Enter Email"
+              name="email"
+              onChange={this.handleChange.bind(this)}
+              value={this.state.email}
+            />
 
-          <input
-            type="password"
-            placeholder="Enter Password"
-            name="password"
-            onChange={this.handleChange.bind(this)}
-            value={this.state.password}
-          />
-
-          <button
-            onClick={this.sign.bind(this)}
-            type="button"
-            className="registerbtn"
-          >
-            Log In
-          </button>
-        </form>
+            <input
+              type="password"
+              placeholder="Enter Password"
+              name="password"
+              onChange={this.handleChange.bind(this)}
+              value={this.state.password}
+            />
+            <div className="row">
+              <div className="btn-group col-12">
+                <button
+                  onClick={this.sign.bind(this)}
+                  type="button"
+                  className="registerbtn"
+                >
+                  Log In
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

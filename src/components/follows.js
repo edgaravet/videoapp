@@ -9,53 +9,56 @@ class Follows extends React.Component {
       videos: [],
       user: {},
       loading: true,
-      uId : null
+      uId: null
     };
   }
-  
+
   componentDidMount() {
     fire.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState({uId:user.uid});
-      } 
+        this.setState({ uId: user.uid });
+      }
     });
 
     let ref = fire.database().ref("/");
     ref.on("value", snapshot => {
-      this.setState({videos: snapshot.val().videos})
-      var subjects = this.state.videos
-     if(this.state.uId != null){
-        Object.keys(subjects).map((key, index) => (
-          this.setState({videos: subjects[this.state.uId] , loading: false})
-        ))
+     
+      this.setState({ videos: snapshot.val().videos });
+      var subjects = this.state.videos;
+      if (this.state.uId != null) {
+        Object.keys(subjects).map((key, index) =>
+          this.setState({ videos: subjects[this.state.uId], loading: false })
+        );
       }
     });
   }
 
-  
   render() {
-    
     const { loading } = this.state;
     if (loading) {
       return null;
     }
-    return <div>
-    {this.state.videos.map((item, index) => (
-      <div key={index} className="col-4">
-        <div className="thumbnail">
-          <div className="youtube">
-            <iframe
-              title="myFrame"
-              width="420"
-              height="315"
-              src={`https://www.youtube.com/embed/${item.v_id}`}
-            />
-          </div>
+
+    return (
+      <div className="container">
+        <div className="row">
+          {this.state.videos.map((item, index) => (
+            <div key={index} className="col-4">
+              <div className="thumbnail">
+                <div className="youtube">
+                  <iframe
+                    title="myFrame"
+                    width="100%"
+                    height="250"
+                    src={`https://www.youtube.com/embed/${item.v_id}`}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    ))
-    }
-    </div>
+    );
   }
 }
 
