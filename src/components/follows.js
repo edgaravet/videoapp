@@ -8,27 +8,26 @@ class Follows extends React.Component {
     this.state = {
       videos: [],
       user: {},
-      loading: true,
-      uId: null
+      loading: true
     };
   }
 
   componentDidMount() {
     fire.auth().onAuthStateChanged(user => {
       if (user) {
-        this.setState({ uId: user.uid });
-      }
-    });
-
-    let ref = fire.database().ref("/");
-    ref.on("value", snapshot => {
-     
-      this.setState({ videos: snapshot.val().videos });
-      var subjects = this.state.videos;
-      if (this.state.uId != null) {
-        Object.keys(subjects).map((key, index) =>
-          this.setState({ videos: subjects[this.state.uId], loading: false })
-        );
+        fire
+          .database()
+          .ref("/")
+          .on("value", snapshot => {
+            if (snapshot.val() != undefined) {
+              Object.keys(snapshot.val().videos).map((key, index) =>
+                this.setState({
+                  videos: snapshot.val().videos[user.uid],
+                  loading: false
+                })
+              );
+            }
+          });
       }
     });
   }
@@ -38,7 +37,6 @@ class Follows extends React.Component {
     if (loading) {
       return null;
     }
-
     return (
       <div className="container">
         <div className="row">

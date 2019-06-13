@@ -22,7 +22,7 @@ class Registration extends React.Component {
   }
 
   registr(e) {
-   if(this.state.password != this.state.confirm_password){
+   if(this.state.password !== this.state.confirm_password){
      this.setState({message: "Password not corect, Please confirm Password!"})
    }else{
     fire

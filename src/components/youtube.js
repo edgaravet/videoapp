@@ -1,16 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import fire from "./config";
 import {
   MDBContainer,
   MDBBtn,
   MDBModal,
   MDBModalBody,
-  MDBModalHeader,
   MDBModalFooter
 } from "mdbreact";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { Redirect } from "react-router-dom";
-import Login from "./login";
 
 class Youtube extends React.Component {
   constructor(props) {
@@ -48,7 +44,7 @@ class Youtube extends React.Component {
   };
 
   createFollow = event => {
-    if (this.state.user.uid != null) {
+    if (this.state.user.uid ) {
       this.state.fVideos.push({
         u_id: this.state.user.uid,
         v_id: event.target.id
@@ -68,8 +64,8 @@ class Youtube extends React.Component {
   componentDidMount() {
     this.authListener();
     var that = this;
-    var API_key = "AIzaSyCE6VhWsBQuikKPh0jsdrixVDOMq_1GxGk";
-    var channelID = "UC17pt_Hz-hrpgtX8QS7zdPg";
+    var API_key = "AIzaSyBsMzTeirX5WzsakfoVKe2K9dh9ulVT2uU";
+    var channelID = "UCcuBBuGaVVcK61MGhpmsokw";
 
     var maxResults = 20;
     var url =
@@ -97,14 +93,14 @@ class Youtube extends React.Component {
 
   render() {
     const { loading } = this.state;
-    const { auth } = this.props;
+
     if (loading) {
       return null;
     }
     return (
       <div className="row">
         {this.state.videos.map((item, index) => (
-          <div className="col-4">
+          <div key={index} className="col-4">
             <div className="thumbnail">
               <div className="border">
                 <iframe
