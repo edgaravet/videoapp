@@ -1,9 +1,7 @@
 body {
-    overflow: auto !important;
+  overflow: auto !important;
   background-color: white;
 }
-
-
 
 li {
   float: left;

@@ -7,7 +7,6 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Follows from "./follows";
 import Login from "./login";
 
-
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -118,7 +117,7 @@ class Header extends React.Component {
         </nav>
         <Route exact path="/" component={Home} />
         <Route path="/home" component={Home} />
-        <Route path="/follows" render={() => <Follows/>} />
+        <Route path="/follows" render={() => <Follows />} />
         <Route path="/registration" component={Registration} />
         <Route path="/login" component={Login} />
       </Router>

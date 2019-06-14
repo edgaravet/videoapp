@@ -13,10 +13,12 @@ class Youtube extends React.Component {
     super(props);
     this.state = {
       videos: [],
-      fVideos: [],
+      folowedVs: [],
       loading: true,
       user: {},
-      modal: false
+      modal: false,
+      disabled: false,
+      loading: true
     };
   }
 
@@ -44,16 +46,21 @@ class Youtube extends React.Component {
   };
 
   createFollow = event => {
-    if (this.state.user.uid ) {
-      this.state.fVideos.push({
+    
+    if (this.state.user.uid) {
+      this.state.folowedVs.push({
         u_id: this.state.user.uid,
         v_id: event.target.id
       });
 
+      event.target.value = "Followed";
+      event.target.className = "btn btn-primary";
+      event.target.disabled = "disabled";
+
       fire
         .database()
         .ref("/videos/" + this.state.user.uid)
-        .set(this.state.fVideos);
+        .set(this.state.folowedVs);
     } else {
       this.setState({
         modal: !this.state.modal
@@ -65,9 +72,9 @@ class Youtube extends React.Component {
     this.authListener();
     var that = this;
     var API_key = "AIzaSyBsMzTeirX5WzsakfoVKe2K9dh9ulVT2uU";
-    var channelID = "UCcuBBuGaVVcK61MGhpmsokw";
+    var channelID = "UCNfxB3nWgDIpkItC6KSqKsw";
 
-    var maxResults = 20;
+    var maxResults = 21;
     var url =
       "https://www.googleapis.com/youtube/v3/search?key=" +
       API_key +
@@ -89,6 +96,24 @@ class Youtube extends React.Component {
       .catch(error => {
         console.error(error);
       });
+
+    fire.auth().onAuthStateChanged(user => {
+      if (user) {
+        fire
+          .database()
+          .ref("/")
+          .on("value", snapshot => {
+            if (snapshot.val().videos) {
+              Object.keys(snapshot.val().videos).map((key, index) =>
+                this.setState({
+                  folowedVs: snapshot.val().videos[user.uid],
+                  loading: false
+                })
+              );
+            }
+          });
+      }
+    });
   }
 
   render() {
@@ -114,15 +139,28 @@ class Youtube extends React.Component {
                   <div className="col-xs-12 col-md-6">
                     {(() => {
                       if (this.state.user.uid != null) {
-                        return (
-                          <button
-                            className="btn btn-success"
-                            id={item.id.videoId}
-                            onClick={this.createFollow.bind(this)}
-                          >
-                            Follow
-                          </button>
-                        );
+                        if (this.state.folowedVs.find(folowedV => folowedV.v_id === item.id.videoId)) {
+                          return (
+                            <input
+                              type="button"
+                              className="btn btn-primary"
+                              id={item.id.videoId}
+                              onClick={this.createFollow.bind(this)}
+                              value="Followed"
+                              disabled="disabled"
+                            />
+                          );
+                        } else {
+                          return (
+                            <input
+                              type="button"
+                              className="btn btn-success"
+                              id={item.id.videoId}
+                              onClick={this.createFollow.bind(this)}
+                              value="Follow"
+                            />
+                          );
+                        }
                       } else {
                         return (
                           <MDBBtn
@@ -130,7 +168,7 @@ class Youtube extends React.Component {
                             className="btn btn-success"
                             onClick={this.toggle}
                           >
-                            Follows
+                            Follow
                           </MDBBtn>
                         );
                       }
