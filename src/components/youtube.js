@@ -31,11 +31,6 @@ class Youtube extends React.Component {
       }
     });
   }
-  toggle = () => {
-    this.setState({
-      modal: !this.state.modal
-    });
-  };
 
   log = () => {
     return (window.location.href = "/login");
@@ -48,6 +43,7 @@ class Youtube extends React.Component {
   createFollow = event => {
     
     if (this.state.user.uid) {
+      
       this.state.folowedVs.push({
         u_id: this.state.user.uid,
         v_id: event.target.id
@@ -103,7 +99,7 @@ class Youtube extends React.Component {
           .database()
           .ref("/")
           .on("value", snapshot => {
-            if (snapshot.val().videos) {
+            if (snapshot.val()) {
               Object.keys(snapshot.val().videos).map((key, index) =>
                 this.setState({
                   folowedVs: snapshot.val().videos[user.uid],
@@ -118,7 +114,6 @@ class Youtube extends React.Component {
 
   render() {
     const { loading } = this.state;
-
     if (loading) {
       return null;
     }
@@ -138,7 +133,7 @@ class Youtube extends React.Component {
                 <div className="row">
                   <div className="col-xs-12 col-md-6">
                     {(() => {
-                      if (this.state.user.uid != null) {
+                      if (this.state.user.uid != null && this.state.folowedVs) {
                         if (this.state.folowedVs.find(folowedV => folowedV.v_id === item.id.videoId)) {
                           return (
                             <input
@@ -161,16 +156,16 @@ class Youtube extends React.Component {
                             />
                           );
                         }
-                      } else {
+                      }else{
                         return (
-                          <MDBBtn
-                            history={this.props.history}
-                            className="btn btn-success"
-                            onClick={this.toggle}
-                          >
-                            Follow
-                          </MDBBtn>
-                        );
+                          <input
+                              type="button"
+                              className="btn btn-success"
+                              id={item.id.videoId}
+                              onClick={this.createFollow.bind(this)}
+                              value="Follow"
+                            />
+                        )
                       }
                     })()}
                   </div>
