@@ -6,6 +6,7 @@ import Home from "./home";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Follows from "./follows";
 import Login from "./login";
+import { IoIosPerson } from "react-icons/io";
 
 class Header extends React.Component {
   constructor(props) {
@@ -64,6 +65,10 @@ class Header extends React.Component {
     }
   };
 
+  clickUser = () => {
+    this.logButton();
+  };
+
   logButton = e => {
     if (this.state.user.email != null) {
       return (
@@ -111,7 +116,18 @@ class Header extends React.Component {
               {this.logButton()}
             </ul>
             <form className="form-inline my-2 my-lg-0">
-              <li className="nav-link">{this.state.user.email}</li>
+              {(() => {
+                if (this.state.user.email) {
+                  return (
+                    <div className="border">
+                      <li className="nav-link">{this.state.user.email}</li>
+                      <span className="user-icon">
+                        <IoIosPerson onDoubleClick={this.clickUser} />
+                      </span>
+                    </div>
+                  );
+                }
+              })()}
             </form>
           </div>
         </nav>

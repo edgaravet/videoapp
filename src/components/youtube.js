@@ -56,11 +56,13 @@ class Youtube extends React.Component {
       event.target.value = "Followed";
       event.target.className = "btn btn-primary";
       event.target.disabled = "disabled";
+      
 
       fire
         .database()
         .ref("/videos/" + this.state.user.uid)
         .set(this.state.fVs);
+      
     } else {
       this.setState({
         modal: !this.state.modal
@@ -71,7 +73,7 @@ class Youtube extends React.Component {
   componentDidMount() {
     this.authListener();
     var that = this;
-    var API_key = "AIzaSyBsMzTeirX5WzsakfoVKe2K9dh9ulVT2uU";
+    var API_key = "AIzaSyCXT9A8P_AAn21_NytBSZfJ1ZHzo-lYHVc";
     var channelID = "UCNfxB3nWgDIpkItC6KSqKsw";
 
     var maxResults = 21;
