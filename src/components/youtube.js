@@ -109,8 +109,10 @@ class Youtube extends React.Component {
               Object.keys(snapshot.val().videos).map((key, index) =>
                 this.setState({
                   folowedVs: snapshot.val().videos[user.uid],
+                  fVs: snapshot.val().videos[user.uid],
                   loading: false
                 })
+                
               );
             }
           });

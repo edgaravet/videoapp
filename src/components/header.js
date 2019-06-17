@@ -66,7 +66,7 @@ class Header extends React.Component {
   };
 
   clickUser = () => {
-    this.logButton();
+    alert('fff')
   };
 
   logButton = e => {
