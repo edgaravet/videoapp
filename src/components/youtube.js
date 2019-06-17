@@ -14,6 +14,7 @@ class Youtube extends React.Component {
     this.state = {
       videos: [],
       folowedVs: [],
+      fVs: [],
       loading: true,
       user: {},
       modal: false,
@@ -31,6 +32,11 @@ class Youtube extends React.Component {
       }
     });
   }
+  toggle = () => {
+    this.setState({
+      modal: !true
+    });
+  };
 
   log = () => {
     return (window.location.href = "/login");
@@ -41,10 +47,8 @@ class Youtube extends React.Component {
   };
 
   createFollow = event => {
-    
     if (this.state.user.uid) {
-      
-      this.state.folowedVs.push({
+      this.state.fVs.push({
         u_id: this.state.user.uid,
         v_id: event.target.id
       });
@@ -56,7 +60,7 @@ class Youtube extends React.Component {
       fire
         .database()
         .ref("/videos/" + this.state.user.uid)
-        .set(this.state.folowedVs);
+        .set(this.state.fVs);
     } else {
       this.setState({
         modal: !this.state.modal
@@ -134,7 +138,11 @@ class Youtube extends React.Component {
                   <div className="col-xs-12 col-md-6">
                     {(() => {
                       if (this.state.user.uid != null && this.state.folowedVs) {
-                        if (this.state.folowedVs.find(folowedV => folowedV.v_id === item.id.videoId)) {
+                        if (
+                          this.state.folowedVs.find(
+                            folowedV => folowedV.v_id === item.id.videoId
+                          )
+                        ) {
                           return (
                             <input
                               type="button"
@@ -156,16 +164,16 @@ class Youtube extends React.Component {
                             />
                           );
                         }
-                      }else{
+                      } else {
                         return (
                           <input
-                              type="button"
-                              className="btn btn-success"
-                              id={item.id.videoId}
-                              onClick={this.createFollow.bind(this)}
-                              value="Follow"
-                            />
-                        )
+                            type="button"
+                            className="btn btn-success"
+                            id={item.id.videoId}
+                            onClick={this.createFollow.bind(this)}
+                            value="Follow"
+                          />
+                        );
                       }
                     })()}
                   </div>
