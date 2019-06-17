@@ -6,9 +6,12 @@ class Registration extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      firstname: "",
+      lastname: "",
       email: "",
       password: "",
-      confirm_password: ""
+      confirm_password: "",
+      message: ""
     };
   }
 
@@ -19,14 +22,19 @@ class Registration extends React.Component {
   }
 
   registr(e) {
-    e.preventDefault();
+   if(this.state.password !== this.state.confirm_password){
+     this.setState({message: "Password not corect, Please confirm Password!"})
+   }else{
     fire
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {})
+      .then(u => {
+        this.props.history.push("/home");
+      })
       .catch(error => {
-        console.log(error);
+        this.setState({message:error.message})
       });
+    }
   }
 
   render() {
@@ -34,9 +42,7 @@ class Registration extends React.Component {
       <div className="container">
         <div className="form_group">
           <form>
-            <label>
-              <b>Email</b>
-            </label>
+          <label className="errorLable">{this.state.message}</label>
             <input
               onChange={this.handleChange.bind(this)}
               value={this.state.email}
@@ -46,9 +52,7 @@ class Registration extends React.Component {
               required
             />
 
-            <label>
-              <b>Password</b>
-            </label>
+           
             <input
               onChange={this.handleChange.bind(this)}
               value={this.state.password}
@@ -58,9 +62,7 @@ class Registration extends React.Component {
               required
             />
 
-            <label>
-              <b>Repeat Password</b>
-            </label>
+      
             <input
               onChange={this.handleChange.bind(this)}
               value={this.state.confirm_password}

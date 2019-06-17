@@ -11,7 +11,9 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {}
+      user: {},
+      firstname: "",
+      lastname: ""
     };
   }
 
@@ -20,13 +22,10 @@ class Header extends React.Component {
   }
   authListener() {
     fire.auth().onAuthStateChanged(user => {
-      console.log(user);
       if (user) {
         this.setState({ user });
-        localStorage.setItem("user", user.uid);
       } else {
         this.setState({ user: " " });
-        localStorage.removeItem("user");
       }
     });
   }
@@ -36,29 +35,52 @@ class Header extends React.Component {
     fire
       .auth()
       .signOut()
-      .catch(function(err) {
-        // Handle errors
-        this.logButton();
-      });
+      .then(u => {})
+      .catch(function(err) {});
+    this.logButton();
+  };
+
+  folowBtn = e => {
+    if (this.state.user.email != null) {
+      return (
+        <li className="nav-item">
+          <Link className="nav-link" to="/follows">
+            Follows
+          </Link>
+        </li>
+      );
+    }
+  };
+
+  regButton = e => {
+    if (this.state.user.email == null) {
+      return (
+        <li className="nav-item">
+          <Link className="nav-link" to="/registration">
+            Registration
+          </Link>
+        </li>
+      );
+    }
   };
 
   logButton = e => {
     if (this.state.user.email != null) {
       return (
-        <a
+        <button
           onClick={this.logout.bind(this)}
-          type="button"
-          className="registerbtn"
+          className="btn btn-outline-success my-2 my-sm-0"
         >
           Logout
-        </a>
+        </button>
       );
     } else {
       return (
-        <Link className="registerbtn" to="/login">
-          Log In
-        </Link>
-        
+        <li className="nav-item">
+          <Link className="btn btn-outline-success my-2 my-sm-0" to="/login">
+            Log In
+          </Link>
+        </li>
       );
     }
   };
@@ -66,38 +88,38 @@ class Header extends React.Component {
   render() {
     return (
       <Router>
-        <div className="header">
-          <ul>
-            <li>
-              <Link className="registerbtn" to="/">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link className="registerbtn" to="/registration">
-                Registration
-              </Link>
-            </li>
-            <li>
-              <Link className="registerbtn" to="/follows">
-                Follows
-              </Link>
-            </li>
-            <li>{this.logButton()}</li>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <Link className="navbar-brand" to="/home">
+            Home
+          </Link>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
 
-            <li>{  this.state.user.email}</li>
-          </ul>
-
-          <div align="right" className="search">
-            <input />
-            <button type="submit">search</button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mr-auto">
+              {this.folowBtn()}
+              {this.regButton()}
+              {this.logButton()}
+            </ul>
+            <form className="form-inline my-2 my-lg-0">
+              <li className="nav-link">{this.state.user.email}</li>
+            </form>
           </div>
-
-          <Route exact path="/" component={Home} />
-          <Route path="/registration" component={Registration} />
-          <Route path="/follows" component={Follows} />
-          <Route path="/login" component={Login} />
-        </div>
+        </nav>
+        <Route exact path="/" component={Home} />
+        <Route path="/home" component={Home} />
+        <Route path="/follows" render={() => <Follows />} />
+        <Route path="/registration" component={Registration} />
+        <Route path="/login" component={Login} />
       </Router>
     );
   }
