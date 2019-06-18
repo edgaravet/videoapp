@@ -138,3 +138,23 @@ a {
 .user-icon{
  font-size: 25px;
 }
+
+.btn-outline-primary{
+  margin-bottom: 16px;
+  
+}
+
+.search{
+  margin-top: 5px;
+ 
+}
+
+
+.btn-outline-success{
+  margin-bottom: 15px;
+}
+
+
+.border{
+  margin-bottom: 6px;
+}

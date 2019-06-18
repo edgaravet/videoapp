@@ -13,13 +13,14 @@ class Youtube extends React.Component {
     super(props);
     this.state = {
       videos: [],
+      matches: [],
       folowedVs: [],
       fVs: [],
-      loading: true,
       user: {},
       modal: false,
       disabled: false,
-      loading: true
+      loading: true,
+      watch: false
     };
   }
 
@@ -35,6 +36,17 @@ class Youtube extends React.Component {
   toggle = () => {
     this.setState({
       modal: !true
+    });
+  };
+
+  handleSearch = e => {
+    this.setState({
+      watch: true
+    });
+    let val = e.target.value;
+    let matches = this.state.videos.filter(v => v.snippet.title.includes(val));
+    this.setState({
+      matches: matches
     });
   };
 
@@ -56,13 +68,11 @@ class Youtube extends React.Component {
       event.target.value = "Followed";
       event.target.className = "btn btn-primary";
       event.target.disabled = "disabled";
-      
 
       fire
         .database()
         .ref("/videos/" + this.state.user.uid)
         .set(this.state.fVs);
-      
     } else {
       this.setState({
         modal: !this.state.modal
@@ -74,7 +84,7 @@ class Youtube extends React.Component {
     this.authListener();
     var that = this;
     var API_key = "AIzaSyCXT9A8P_AAn21_NytBSZfJ1ZHzo-lYHVc";
-    var channelID = "UCNfxB3nWgDIpkItC6KSqKsw";
+    var channelID = "UC80PWRj_ZU8Zu0HSMNVwKWw";
 
     var maxResults = 21;
     var url =
@@ -112,7 +122,6 @@ class Youtube extends React.Component {
                   fVs: snapshot.val().videos[user.uid],
                   loading: false
                 })
-                
               );
             }
           });
@@ -121,13 +130,27 @@ class Youtube extends React.Component {
   }
 
   render() {
+    let finematchvideo = [];
     const { loading } = this.state;
     if (loading) {
       return null;
     }
+
+    if (this.state.watch == false) {
+      finematchvideo = this.state.videos;
+    } else {
+      finematchvideo = this.state.matches;
+    }
+    c;
     return (
       <div className="row">
-        {this.state.videos.map((item, index) => (
+        <input
+          type="text"
+          onChange={this.handleSearch.bind(this)}
+          placeholder="search"
+          value={this.state.value}
+        />
+        {finematchvideo.map((item, index) => (
           <div key={index} className="col-4">
             <div className="thumbnail">
               <div className="border">
@@ -136,6 +159,7 @@ class Youtube extends React.Component {
                   width="100%"
                   src={`https://www.youtube.com/embed/${item.id.videoId}`}
                 />
+                <p>{item.snippet.title}</p>
               </div>
               <div className="caption">
                 <div className="row">

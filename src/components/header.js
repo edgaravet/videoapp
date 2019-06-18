@@ -14,7 +14,8 @@ class Header extends React.Component {
     this.state = {
       user: {},
       firstname: "",
-      lastname: ""
+      lastname: "",
+      text: ""
     };
   }
 
@@ -31,6 +32,8 @@ class Header extends React.Component {
     });
   }
 
+
+ 
   logout = e => {
     e.preventDefault();
     fire
@@ -66,7 +69,7 @@ class Header extends React.Component {
   };
 
   clickUser = () => {
-    alert('fff')
+    alert("fgddf");
   };
 
   logButton = e => {
@@ -129,6 +132,8 @@ class Header extends React.Component {
                 }
               })()}
             </form>
+
+
           </div>
         </nav>
         <Route exact path="/" component={Home} />
