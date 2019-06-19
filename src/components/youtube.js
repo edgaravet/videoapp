@@ -7,6 +7,7 @@ import {
   MDBModalBody,
   MDBModalFooter
 } from "mdbreact";
+import ModalVideo from "react-modal-video";
 
 class Youtube extends React.Component {
   constructor(props) {
@@ -20,8 +21,12 @@ class Youtube extends React.Component {
       modal: false,
       disabled: false,
       loading: true,
-      watch: false
+      watch: false,
+      isOpen: false,
+      isOpenYouku: false,
+      videoId: null
     };
+    this.openModal = this.openModal.bind(this);
   }
 
   authListener() {
@@ -57,6 +62,9 @@ class Youtube extends React.Component {
   signUp = () => {
     return (window.location.href = "/registration");
   };
+  openModal() {
+    this.setState({ isOpen: true });
+  }
 
   createFollow = event => {
     if (this.state.user.uid) {
@@ -84,7 +92,7 @@ class Youtube extends React.Component {
     this.authListener();
     var that = this;
     var API_key = "AIzaSyCXT9A8P_AAn21_NytBSZfJ1ZHzo-lYHVc";
-    var channelID = "UC80PWRj_ZU8Zu0HSMNVwKWw";
+    var channelID = "UCuHzBCaKmtaLcRAOoazhCPA";
 
     var maxResults = 21;
     var url =
@@ -141,7 +149,7 @@ class Youtube extends React.Component {
     } else {
       finematchvideo = this.state.matches;
     }
-    c;
+
     return (
       <div className="row">
         <input
@@ -150,66 +158,94 @@ class Youtube extends React.Component {
           placeholder="search"
           value={this.state.value}
         />
-        {finematchvideo.map((item, index) => (
-          <div key={index} className="col-4">
-            <div className="thumbnail">
-              <div className="border">
-                <iframe
-                  title="myFrame"
-                  width="100%"
-                  src={`https://www.youtube.com/embed/${item.id.videoId}`}
-                />
-                <p>{item.snippet.title}</p>
-              </div>
-              <div className="caption">
-                <div className="row">
-                  <div className="col-xs-12 col-md-6">
-                    {(() => {
-                      if (this.state.user.uid != null && this.state.folowedVs) {
-                        if (
-                          this.state.folowedVs.find(
-                            folowedV => folowedV.v_id === item.id.videoId
-                          )
-                        ) {
-                          return (
-                            <input
-                              type="button"
-                              className="btn btn-primary"
-                              id={item.id.videoId}
-                              onClick={this.createFollow.bind(this)}
-                              value="Followed"
-                              disabled="disabled"
-                            />
-                          );
-                        } else {
-                          return (
-                            <input
-                              type="button"
-                              className="btn btn-success"
-                              id={item.id.videoId}
-                              onClick={this.createFollow.bind(this)}
-                              value="Follow"
-                            />
-                          );
-                        }
-                      } else {
-                        return (
-                          <input
-                            type="button"
-                            className="btn btn-success"
-                            id={item.id.videoId}
-                            onClick={this.createFollow.bind(this)}
-                            value="Follow"
-                          />
-                        );
+
+          <div className="container">
+            <div className="row">
+              {finematchvideo.map((item, index) => (
+                <div key={index} className="col-md-4">
+                  <div className="card mb-4 shadow-sm">
+                    <img
+                      className="img-thumbnail"
+                      onDoubleClick={() =>
+                        this.setState({
+                          isOpen: true,
+                          videoId: item.id.videoId
+                        })
                       }
-                    })()}
+                      src={`${item.snippet.thumbnails.high.url}`}
+                    />
+                    <div className="card-body">
+                      <h5>{item.snippet.title}</h5>
+                      <p className="card-text">
+                        {item.snippet.description}
+                      </p>
+                      </div>
+                     
+                      <div className="d-flex follow_btn justify-content-between align-items-center">
+                        <div className="btn-group">
+                          {(() => {
+                            if (
+                              this.state.user.uid != null &&
+                              this.state.folowedVs
+                            ) {
+                              if (
+                                this.state.folowedVs.find(
+                                  folowedV => folowedV.v_id === item.id.videoId
+                                )
+                              ) {
+                                return (
+                                  <input
+                                    type="button"
+                                    className="btn btn-primary"
+                                    id={item.id.videoId}
+                                    onClick={this.createFollow.bind(this)}
+                                    value="Followed"
+                                    disabled="disabled"
+                                  />
+                                );
+                              } else {
+                                return (
+                                  <input
+                                    type="button"
+                                    className="btn btn-sm btn-outline-secondary"
+                                    id={item.id.videoId}
+                                    onClick={this.createFollow.bind(this)}
+                                    value="Follow"
+                                  />
+                                );
+                              }
+                            } else {
+                              return (
+                                <input
+                                  type="button"
+                                  className="btn btn-sm btn-outline-secondary"
+                                  id={item.id.videoId}
+                                  onClick={this.createFollow.bind(this)}
+                                  value="Follow"
+                                />
+                              );
+                            }
+                          })()}
+                        </div>
+                        <small className="text-muted">
+                        {/* https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=WDgM9qtPTn4&key=AIzaSyCXT9A8P_AAn21_NytBSZfJ1ZHzo-lYHVc */}
+                        </small>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                
+              ))}
             </div>
           </div>
-        ))}
+  
+
+        <div>
+          <ModalVideo
+            isOpen={this.state.isOpen}
+            videoId={this.state.videoId}
+            onClose={() => this.setState({ isOpen: false })}
+          />
+        </div>
         <MDBContainer className="ReactModal__Overlay">
           <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
             <MDBModalBody> Please Log In or Registration</MDBModalBody>
