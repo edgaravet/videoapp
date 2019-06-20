@@ -7,10 +7,12 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Follows from "./follows";
 import Login from "./login";
 import { IoIosPerson } from "react-icons/io";
+const image = require('../images/logo.jpg')
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
+    
     this.state = {
       user: {},
       firstname: "",
@@ -32,8 +34,6 @@ class Header extends React.Component {
     });
   }
 
-
- 
   logout = e => {
     e.preventDefault();
     fire
@@ -95,11 +95,23 @@ class Header extends React.Component {
 
   render() {
     return (
+      
+
       <Router>
+        
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <Link to = '/home'>
+         {/* <img className = 'logoimg' src="https://cdn5.f-cdn.com/contestentries/969990/21115755/58c411bb43f9e_thumb900.jpg" alt = 'logo' /> */}
+
+         <img className = 'logoimg' src={image} alt = 'logo' />
+         </Link>
           <Link className="navbar-brand" to="/home">
+         
             Home
           </Link>
+
+          
+
           <button
             className="navbar-toggler"
             type="button"
@@ -132,8 +144,6 @@ class Header extends React.Component {
                 }
               })()}
             </form>
-
-
           </div>
         </nav>
         <Route exact path="/" component={Home} />
