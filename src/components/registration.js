@@ -29,7 +29,7 @@ class Registration extends React.Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(u => {
-        this.props.history.push("/home");
+        window.location.href = "/home"
       })
       .catch(error => {
         this.setState({message:error.message})
