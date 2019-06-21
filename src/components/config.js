@@ -1,15 +1,16 @@
 import firebase from "firebase";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAwTnPvjpnUiWEqJRcYLF7gih_O9RXX7PY",
-  authDomain: "movieapp-cd6cb.firebaseapp.com",
-  databaseURL: "https://movieapp-cd6cb.firebaseio.com",
-  projectId: "movieapp-cd6cb",
-  storageBucket: "movieapp-cd6cb.appspot.com",
-  messagingSenderId: "254173745131",
-  appId: "1:254173745131:web:fb7fbe720a04e0b3"
+  apiKey: "AIzaSyB82lsT-zn9_HoAxT_Gtp7ZGlj-XZuWEiw",
+  authDomain: "vapp-5801f.firebaseapp.com",
+  databaseURL: "https://vapp-5801f.firebaseio.com",
+  projectId: "vapp-5801f",
+  storageBucket: "vapp-5801f.appspot.com",
+  messagingSenderId: "7035325070",
+  appId: "1:7035325070:web:8762a415b1e92ca0"
 };
 
 const fire = firebase.initializeApp(firebaseConfig);
 
 export default fire;
+ 
