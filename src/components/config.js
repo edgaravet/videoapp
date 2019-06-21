@@ -1,13 +1,13 @@
 import firebase from "firebase";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD7h7GAnA0fVmSm9uOG7cPI-M094DYiRZ4",
-    authDomain: "newvideos-37721.firebaseapp.com",
-    databaseURL: "https://newvideos-37721.firebaseio.com",
-    projectId: "newvideos-37721",
-    storageBucket: "newvideos-37721.appspot.com",
-    messagingSenderId: "115823345180",
-    appId: "1:115823345180:web:0525f7ba1c244267"
+  apiKey: "AIzaSyB82lsT-zn9_HoAxT_Gtp7ZGlj-XZuWEiw",
+  authDomain: "vapp-5801f.firebaseapp.com",
+  databaseURL: "https://vapp-5801f.firebaseio.com",
+  projectId: "vapp-5801f",
+  storageBucket: "vapp-5801f.appspot.com",
+  messagingSenderId: "7035325070",
+  appId: "1:7035325070:web:8762a415b1e92ca0"
 };
 
 const fire = firebase.initializeApp(firebaseConfig);

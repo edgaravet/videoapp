@@ -39,8 +39,10 @@ class Registration extends React.Component {
 
   render() {
     return (
+      
       <div className="container">
         <div className="form_group">
+        <h1>Registration</h1>
           <form>
           <label className="errorLable">{this.state.message}</label>
             <input

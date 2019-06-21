@@ -7,6 +7,7 @@
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
     "@react-firebase/auth": "^0.2.9",
+    "bootbox": "^5.1.3",
     "bootstrap": "^4.3.1",
     "firebase": "^6.2.0",
     "glyphicons": "^0.2.0",

@@ -9,6 +9,9 @@ import {
 } from "mdbreact";
 import ModalVideo from "react-modal-video";
 import ScrollUpButton from "react-scroll-up-button";
+import { MDBCol } from "mdbreact";
+import 'bootstrap/dist/js/bootstrap.min.js';
+import bootbox from "bootbox";
 
 class Youtube extends React.Component {
   constructor(props) {
@@ -67,36 +70,42 @@ class Youtube extends React.Component {
     this.setState({ isOpen: true });
   }
   unfollowVideo = event => {
-  
+
     var fVideos = [];
-    var isAdmin = window.confirm("are you sure delete");
-    if (isAdmin === true) {
-      if (this.state.user.uid) {
-        this.state.folowedVs.forEach(function(item) {
-          if (event.target.id !== item.v_id) {
-            fVideos.push(item);
-          }
-        });
-        if (fVideos) {
-          fire
-            .database()
-            .ref("/videos/" + this.state.user.uid)
-            .set(fVideos);
+
+    var folowedVs = this.state.folowedVs;
+    var uid = this.state.user.uid;
+    var target_id = event.target.id
+
+    bootbox.confirm("Are you sure?", function(result){
+      folowedVs.forEach(function(item) {
+        if (target_id !== item.v_id) {
+          fVideos.push(item);
         }
+      });
+      if (fVideos) {
+        fire
+          .database()
+          .ref("/videos/" + uid)
+          .set(fVideos);
       }
-    }
+    })
+
   };
 
   createFollow = event => {
     if (this.state.user.uid) {
       this.state.fVs.push({
         u_id: this.state.user.uid,
-        v_id: event.target.id
+        v_id: event.target.id,
+        v_img: event.currentTarget.dataset.id,
+        v_title: event.currentTarget.dataset.title,
+        v_description: event.currentTarget.dataset.description,
+        v_count: event.currentTarget.dataset.count
       });
 
       event.target.value = "Followed";
       event.target.className = "btn btn-primary";
-     
 
       fire
         .database()
@@ -109,11 +118,11 @@ class Youtube extends React.Component {
     }
   };
 
-  componentDidMount() {
+  getYoutubeVideos() {
     this.authListener();
     var that = this;
-    var API_key = "AIzaSyCXT9A8P_AAn21_NytBSZfJ1ZHzo-lYHVc";
-    var channelID = "UCuHzBCaKmtaLcRAOoazhCPA";
+    var API_key = "AIzaSyC8ujfTlBGK6Ex9tGN6I8LfGNsWFO83Czo";
+    var channelID = "UCjmJDM5pRKbUlVIzDYYWb6g";
 
     var maxResults = 21;
     var url =
@@ -123,7 +132,6 @@ class Youtube extends React.Component {
       channelID +
       "&part=snippet,id&order=date&maxResults=" +
       maxResults;
-
     fetch(url)
       .then(function(response) {
         if (response.status >= 400) {
@@ -132,6 +140,23 @@ class Youtube extends React.Component {
         return response.json();
       })
       .then(function(data) {
+        data.items.map((item, index) =>
+          fetch(
+            "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=" +
+              item.id.videoId +
+              "&key=" +
+              API_key
+          )
+            .then(res => res.json())
+            .then(
+              result => {
+                  item.viewCount = result.items[0].statistics.viewCount;
+              },
+              error => {
+                console.log(error);
+              }
+            )
+        );
         that.setState({ videos: data.items, loading: false });
       })
       .catch(error => {
@@ -158,6 +183,11 @@ class Youtube extends React.Component {
     });
   }
 
+
+  componentDidMount() {
+    this.getYoutubeVideos();
+  }
+
   render() {
     let finematchvideo = [];
     const { loading } = this.state;
@@ -172,20 +202,23 @@ class Youtube extends React.Component {
     }
 
     return (
-      <div className="row">
-        <input
-          type="text"
-          onChange={this.handleSearch.bind(this)}
-          placeholder="search"
-          value={this.state.value}
-        />
+      <div className="active-pink-3 active-pink-4 mb-4">
+        <MDBCol md="12">
+          <input
+            className='"form-control"'
+            type="text"
+            onChange={this.handleSearch.bind(this)}
+            placeholder="Search"
+            value={this.state.value}
+          />
+        </MDBCol>
         <div className="container">
           <div className="row">
             {finematchvideo.map((item, index) => (
               <div key={index} className="col-md-4" id={item.id.videoId}>
                 <div className="card mb-4 shadow-sm">
                   <img
-                  alt = 'img'
+                    alt="img"
                     className="img-thumbnail"
                     onDoubleClick={() =>
                       this.setState({
@@ -193,13 +226,13 @@ class Youtube extends React.Component {
                         videoId: item.id.videoId
                       })
                     }
-                    src={`${item.snippet.thumbnails.high.url}`}
+                    src={item.snippet.thumbnails.high.url}
                   />
                   <div className="card-body">
                     <h5>{item.snippet.title}</h5>
                     <p className="card-text">{item.snippet.description}</p>
                   </div>
-
+              
                   <div className="d-flex follow_btn justify-content-between align-items-center">
                     <div className="btn-group">
                       {(() => {
@@ -213,17 +246,36 @@ class Youtube extends React.Component {
                             )
                           ) {
                             return (
-                              <input
-                                type="button"
-                                className="btn btn-danger"
-                                id={item.id.videoId}
-                                onClick={this.unfollowVideo .bind(this)}
-                                value="Unfollow"
-                               
-                              />
+                                <input
+                                  data-id={item.snippet.thumbnails.high.url}
+                                  data-title={item.snippet.title}
+                                  data-description={item.snippet.description}
+                                  data-count={item.viewCount}
+                                  type="button"
+                                  className="btn btn-danger"
+                                  id={item.id.videoId}
+                                  onClick={this.unfollowVideo.bind(this)}
+                                  value="Unfollow"
+                                />
                             );
                           } else {
                             return (
+                                <input
+                                  data-id={item.snippet.thumbnails.high.url}
+                                  data-title={item.snippet.title}
+                                  data-description={item.snippet.description}
+                                  data-count={item.viewCount}
+                                  type="button"
+                                  className="btn btn-sm btn-outline-secondary"
+                                  id={item.id.videoId}
+                                  onClick={this.createFollow.bind(this)}
+                                  value="Follow"
+                                />        
+                            );
+                          }
+                        } else {
+                          return (
+                         
                               <input
                                 type="button"
                                 className="btn btn-sm btn-outline-secondary"
@@ -231,25 +283,15 @@ class Youtube extends React.Component {
                                 onClick={this.createFollow.bind(this)}
                                 value="Follow"
                               />
-                            );
-                          }
-                        } else {
-                          return (
-                            <input
-                              type="button"
-                              className="btn btn-sm btn-outline-secondary"
-                              id={item.id.videoId}
-                              onClick={this.createFollow.bind(this)}
-                              value="Follow"
-                            />
+                      
                           );
                         }
                       })()}
                     </div>
                     <small className="text-muted">
-                      {/* https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=WDgM9qtPTn4&key=AIzaSyCXT9A8P_AAn21_NytBSZfJ1ZHzo-lYHVc */}
+                      {item.viewCount + " views"}
                     </small>
-                  </div>
+                  </div>                 
                 </div>
               </div>
             ))}
@@ -263,9 +305,8 @@ class Youtube extends React.Component {
           />
         </div>
         <div>
-                <ScrollUpButton className = 'topButton' />
-                
-            </div>
+          <ScrollUpButton className="topButton" />
+        </div>
         <MDBContainer className="ReactModal__Overlay">
           <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
             <MDBModalBody> Please Log In or Registration</MDBModalBody>
@@ -283,7 +324,6 @@ class Youtube extends React.Component {
           </MDBModal>
         </MDBContainer>
       </div>
-      
     );
   }
 }

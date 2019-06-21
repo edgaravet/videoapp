@@ -12,7 +12,7 @@ class Login extends React.Component {
   }
 
   regist(e) {
-    this.props.history.push("/registration");
+    window.location.href = "/registration"
   }
   handleChange(e) {
     this.setState({
@@ -26,7 +26,7 @@ class Login extends React.Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(u => {
-        this.props.history.push("/home");
+        window.location.href = "/home"
       })
       .catch(error => {
         this.setState({
