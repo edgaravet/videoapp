@@ -44,6 +44,8 @@ class Header extends React.Component {
       .then(u => {})
       .catch(function(err) {});
     this.logButton();
+    localStorage.removeItem('user_login');
+
   };
 
   folowBtn = e => {

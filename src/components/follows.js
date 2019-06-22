@@ -6,6 +6,7 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import bootbox from "bootbox";
 
 class Follows extends React.Component {
+ 
   constructor(props) {
     super(props);
     this.state = {
@@ -16,17 +17,15 @@ class Follows extends React.Component {
       videoId: ""
     };
   }
-
   unfollowVideo = event => {
     var fVideos = [];
-    var videos = this.state.videos;
+    const {videos} = this.state;
     var uid = this.state.user.uid;
     var target_id = event.target.id
     bootbox.confirm("Are you sure?", function(result){
         videos.forEach(function(item) {
           if (target_id !== item.v_id) {
             fVideos.push(item);
-           
           }
         });
         if (fVideos) {
@@ -36,7 +35,6 @@ class Follows extends React.Component {
             .set(fVideos);
         }
     })
-
   };
 
   componentDidMount() {
@@ -63,14 +61,14 @@ class Follows extends React.Component {
   }
 
   render() {
+    if(this.state.user == null || this.state.user.length === 0){
+      window.location.href = "/home"
+    }
     const { loading } = this.state;
     if (loading) {
       return null;
     }
     return (
-    
-      
-      
       <div className="container">
      
         {(() => {

@@ -10,6 +10,7 @@ class Registration extends React.Component {
       lastname: "",
       email: "",
       password: "",
+      user:{},
       confirm_password: "",
       message: ""
     };
@@ -29,6 +30,8 @@ class Registration extends React.Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(u => {
+        this.setState({user:u})
+        localStorage.setItem('user_login', u.email);
         window.location.href = "/home"
       })
       .catch(error => {
@@ -38,8 +41,10 @@ class Registration extends React.Component {
   }
 
   render() {
+    if(localStorage.getItem('user_login')){
+      window.location.href = "/home"
+    }
     return (
-      
       <div className="container">
         <div className="form_group">
         <h1>Registration</h1>
@@ -53,7 +58,6 @@ class Registration extends React.Component {
               name="email"
               required
             />
-
            
             <input
               onChange={this.handleChange.bind(this)}

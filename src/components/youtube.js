@@ -94,23 +94,40 @@ class Youtube extends React.Component {
   };
 
   createFollow = event => {
+    const {fVs} = this.state;
     if (this.state.user.uid) {
-      this.state.fVs.push({
-        u_id: this.state.user.uid,
-        v_id: event.target.id,
-        v_img: event.currentTarget.dataset.id,
-        v_title: event.currentTarget.dataset.title,
-        v_description: event.currentTarget.dataset.description,
-        v_count: event.currentTarget.dataset.count
-      });
-
-      event.target.value = "Followed";
-      event.target.className = "btn btn-primary";
-
-      fire
+        var arr = [{
+          u_id: this.state.user.uid,
+          v_id: event.target.id,
+          v_img: event.currentTarget.dataset.id,
+          v_title: event.currentTarget.dataset.title,
+          v_description: event.currentTarget.dataset.description,
+          v_count: event.currentTarget.dataset.count
+        }];
+        if(this.state.fVs.length > 0){
+          fVs.push({
+            u_id: this.state.user.uid,
+            v_id: event.target.id,
+            v_img: event.currentTarget.dataset.id,
+            v_title: event.currentTarget.dataset.title,
+            v_description: event.currentTarget.dataset.description,
+            v_count: event.currentTarget.dataset.count
+          })
+          this.setState({fVs})
+          fire
+              .database()
+              .ref("/videos/" + this.state.user.uid)
+              .set(this.state.fVs);
+        }else{
+          this.setState({ 
+            fVs: arr
+        })
+        fire
         .database()
         .ref("/videos/" + this.state.user.uid)
-        .set(this.state.fVs);
+        .set(arr);
+      }
+     
     } else {
       this.setState({
         modal: !this.state.modal
@@ -121,7 +138,7 @@ class Youtube extends React.Component {
   getYoutubeVideos() {
     this.authListener();
     var that = this;
-    var API_key = "AIzaSyC8ujfTlBGK6Ex9tGN6I8LfGNsWFO83Czo";
+    var API_key = "AIzaSyDnBNe208oLHjpld0AphxXzoHgwH5whrqc";
     var channelID = "UCjmJDM5pRKbUlVIzDYYWb6g";
 
     var maxResults = 21;
