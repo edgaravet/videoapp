@@ -10,7 +10,7 @@ import {
 import ModalVideo from "react-modal-video";
 import ScrollUpButton from "react-scroll-up-button";
 import { MDBCol } from "mdbreact";
-import 'bootstrap/dist/js/bootstrap.min.js';
+import "bootstrap/dist/js/bootstrap.min.js";
 import bootbox from "bootbox";
 
 class Youtube extends React.Component {
@@ -19,8 +19,8 @@ class Youtube extends React.Component {
     this.state = {
       videos: [],
       matches: [],
-      folowedVs: [],
-      fVs: [],
+      folowedVs: [false],
+      fVs: [1,2],
       user: {},
       modal: false,
       disabled: false,
@@ -31,6 +31,7 @@ class Youtube extends React.Component {
       videoId: null
     };
     this.openModal = this.openModal.bind(this);
+    this.createFollow = this.createFollow.bind(this);
   }
 
   authListener() {
@@ -70,14 +71,13 @@ class Youtube extends React.Component {
     this.setState({ isOpen: true });
   }
   unfollowVideo = event => {
-
     var fVideos = [];
 
     var folowedVs = this.state.folowedVs;
     var uid = this.state.user.uid;
-    var target_id = event.target.id
+    var target_id = event.target.id;
 
-    bootbox.confirm("Are you sure?", function(result){
+    bootbox.confirm("Are you sure?", function(result) {
       folowedVs.forEach(function(item) {
         if (target_id !== item.v_id) {
           fVideos.push(item);
@@ -89,45 +89,48 @@ class Youtube extends React.Component {
           .ref("/videos/" + uid)
           .set(fVideos);
       }
-    })
-
+    });
   };
 
   createFollow = event => {
-    const {fVs} = this.state;
+    const { fVs } = this.state;
+    debugger
+
     if (this.state.user.uid) {
-        var arr = [{
+      let arr = [
+        {
           u_id: this.state.user.uid,
           v_id: event.target.id,
           v_img: event.currentTarget.dataset.id,
           v_title: event.currentTarget.dataset.title,
           v_description: event.currentTarget.dataset.description,
           v_count: event.currentTarget.dataset.count
-        }];
-        if(this.state.fVs.length > 0){
-          fVs.push({
-            u_id: this.state.user.uid,
-            v_id: event.target.id,
-            v_img: event.currentTarget.dataset.id,
-            v_title: event.currentTarget.dataset.title,
-            v_description: event.currentTarget.dataset.description,
-            v_count: event.currentTarget.dataset.count
-          })
-          this.setState({fVs})
-          fire
-              .database()
-              .ref("/videos/" + this.state.user.uid)
-              .set(this.state.fVs);
-        }else{
-          this.setState({ 
-            fVs: arr
-        })
+        }
+      ];
+
+      if (this.state.fVs) {
+        fVs.push({
+          u_id: this.state.user.uid,
+          v_id: event.target.id,
+          v_img: event.currentTarget.dataset.id,
+          v_title: event.currentTarget.dataset.title,
+          v_description: event.currentTarget.dataset.description,
+          v_count: event.currentTarget.dataset.count
+        });
+        this.setState({ fVs: fVs });
         fire
-        .database()
-        .ref("/videos/" + this.state.user.uid)
-        .set(arr);
+          .database()
+          .ref("/videos/" + this.state.user.uid)
+          .set(this.state.fVs);
+      } else {
+        this.setState({
+          fVs: arr
+        });
+        fire
+          .database()
+          .ref("/videos/" + this.state.user.uid)
+          .set(arr);
       }
-     
     } else {
       this.setState({
         modal: !this.state.modal
@@ -138,7 +141,7 @@ class Youtube extends React.Component {
   getYoutubeVideos() {
     this.authListener();
     var that = this;
-    var API_key = "AIzaSyDnBNe208oLHjpld0AphxXzoHgwH5whrqc";
+    var API_key = "AIzaSyCBT6UE01oRq-ao9mPH6b9WIbcneRRA3-c";
     var channelID = "UCjmJDM5pRKbUlVIzDYYWb6g";
 
     var maxResults = 21;
@@ -167,7 +170,7 @@ class Youtube extends React.Component {
             .then(res => res.json())
             .then(
               result => {
-                  item.viewCount = result.items[0].statistics.viewCount;
+                item.viewCount = result.items[0].statistics.viewCount;
               },
               error => {
                 console.log(error);
@@ -199,7 +202,6 @@ class Youtube extends React.Component {
       }
     });
   }
-
 
   componentDidMount() {
     this.getYoutubeVideos();
@@ -249,7 +251,7 @@ class Youtube extends React.Component {
                     <h5>{item.snippet.title}</h5>
                     <p className="card-text">{item.snippet.description}</p>
                   </div>
-              
+
                   <div className="d-flex follow_btn justify-content-between align-items-center">
                     <div className="btn-group">
                       {(() => {
@@ -263,44 +265,42 @@ class Youtube extends React.Component {
                             )
                           ) {
                             return (
-                                <input
-                                  data-id={item.snippet.thumbnails.high.url}
-                                  data-title={item.snippet.title}
-                                  data-description={item.snippet.description}
-                                  data-count={item.viewCount}
-                                  type="button"
-                                  className="btn btn-danger"
-                                  id={item.id.videoId}
-                                  onClick={this.unfollowVideo.bind(this)}
-                                  value="Unfollow"
-                                />
+                              <input
+                                data-id={item.snippet.thumbnails.high.url}
+                                data-title={item.snippet.title}
+                                data-description={item.snippet.description}
+                                data-count={item.viewCount}
+                                type="button"
+                                className="btn btn-danger"
+                                id={item.id.videoId}
+                                onClick={this.unfollowVideo.bind(this)}
+                                value="Unfollow"
+                              />
                             );
                           } else {
                             return (
-                                <input
-                                  data-id={item.snippet.thumbnails.high.url}
-                                  data-title={item.snippet.title}
-                                  data-description={item.snippet.description}
-                                  data-count={item.viewCount}
-                                  type="button"
-                                  className="btn btn-sm btn-outline-secondary"
-                                  id={item.id.videoId}
-                                  onClick={this.createFollow.bind(this)}
-                                  value="Follow"
-                                />        
-                            );
-                          }
-                        } else {
-                          return (
-                         
                               <input
+                                data-id={item.snippet.thumbnails.high.url}
+                                data-title={item.snippet.title}
+                                data-description={item.snippet.description}
+                                data-count={item.viewCount}
                                 type="button"
                                 className="btn btn-sm btn-outline-secondary"
                                 id={item.id.videoId}
                                 onClick={this.createFollow.bind(this)}
                                 value="Follow"
                               />
-                      
+                            );
+                          }
+                        } else {
+                          return (
+                            <input
+                              type="button"
+                              className="btn btn-sm btn-outline-secondary"
+                              id={item.id.videoId}
+                              onClick={this.createFollow.bind(this)}
+                              value="Follow"
+                            />
                           );
                         }
                       })()}
@@ -308,7 +308,7 @@ class Youtube extends React.Component {
                     <small className="text-muted">
                       {item.viewCount + " views"}
                     </small>
-                  </div>                 
+                  </div>
                 </div>
               </div>
             ))}
