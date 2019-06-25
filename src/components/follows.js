@@ -86,7 +86,7 @@ class Follows extends React.Component {
                         <img
                           alt="img"
                           className="img-thumbnail"
-                          onDoubleClick={() =>
+                        onClick={() =>
                             this.setState({
                               isOpen: true,
                               videoId: item.v_id
@@ -108,7 +108,7 @@ class Follows extends React.Component {
                               value="Unfollow"
                             />
                             </div>
-                            <span>{item.v_count+ ' views'}</span>
+                            {/* <span>{item.v_count+ ' views'}</span> */}
                         </div>
                         <div>
                           <ModalVideo
