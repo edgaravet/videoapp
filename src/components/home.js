@@ -3,6 +3,7 @@ import "../App.css";
 import Youtube from "./youtube";
 import FooterPage from "./footer";
 
+
 class Home extends React.Component {
   render() {
     return (
@@ -12,6 +13,8 @@ class Home extends React.Component {
         </div>
 
         <FooterPage />
+       
+          
       </>
     );
   }

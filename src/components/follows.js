@@ -23,6 +23,7 @@ class Follows extends React.Component {
     var uid = this.state.user.uid;
     var target_id = event.target.id
     bootbox.confirm("Are you sure?", function(result){
+      if(result === true){
         videos.forEach(function(item) {
           if (target_id !== item.v_id) {
             fVideos.push(item);
@@ -34,7 +35,9 @@ class Follows extends React.Component {
             .ref("/videos/" + uid)
             .set(fVideos);
         }
+      }
     })
+  
   };
 
   componentDidMount() {

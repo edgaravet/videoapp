@@ -1,5 +1,6 @@
 import React from "react";
 import fire from "./config";
+import Spinner from "./loader";
 
 class Login extends React.Component {
   constructor(props) {
@@ -8,7 +9,8 @@ class Login extends React.Component {
       email: "",
       password: "",
       user:{},
-      message: null
+      message: null,
+      loading:false
     };
   }
 
@@ -23,20 +25,28 @@ class Login extends React.Component {
 
   sign = e => {
     e.preventDefault();
+    this.setState({
+      loading:true
+    })
+
+  
+
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(u => {
-        this.setState({user:u})
+        
         localStorage.setItem('user_login', u.email)
         window.location.href = "/home"
       })
       .catch(error => {
         this.setState({
-          message: error.message
+          message: error.message,
+          loading:false
         });
         console.log(error);
       });
+
   };
 
   render() {
@@ -72,7 +82,10 @@ class Login extends React.Component {
                 >
                   Log In
                 </button>
+              
+                
               </div>
+              { this.state.loading &&  <Spinner/>}
             </div>
           </form>
         </div>

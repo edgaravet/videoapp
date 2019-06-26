@@ -1,6 +1,7 @@
 import React from "react";
 import "../App.css";
 import fire from "./config";
+import Spinner from "./loader";
 
 class Registration extends React.Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class Registration extends React.Component {
       password: "",
       user:{},
       confirm_password: "",
-      message: ""
+      message: "",
+      loading:false
     };
   }
 
@@ -23,6 +25,11 @@ class Registration extends React.Component {
   }
 
   registr(e) {
+    e.preventDefault()
+    this.setState({
+      loading:true
+    })
+
    if(this.state.password !== this.state.confirm_password){
      this.setState({message: "Password not corect, Please confirm Password!"})
    }else{
@@ -30,12 +37,12 @@ class Registration extends React.Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(u => {
-        this.setState({user:u})
+        this.setState({user:u,loading:false})
         localStorage.setItem('user_login', u.email);
         window.location.href = "/home"
       })
       .catch(error => {
-        this.setState({message:error.message})
+        this.setState({message:error.message,loading:false})
       });
     }
   }
@@ -86,6 +93,7 @@ class Registration extends React.Component {
               Register
             </button>
           </form>
+          { this.state.loading &&  <Spinner/>}
         </div>
       </div>
     );

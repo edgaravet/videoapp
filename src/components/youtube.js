@@ -12,6 +12,7 @@ import ScrollUpButton from "react-scroll-up-button";
 import { MDBCol } from "mdbreact";
 import "bootstrap/dist/js/bootstrap.min.js";
 import bootbox from "bootbox";
+import SpinnerPage from "./loader";
 
 class Youtube extends React.Component {
   constructor(props) {
@@ -95,12 +96,15 @@ class Youtube extends React.Component {
 
      createFollow (event) {
 
-    
+      
 
     
     const { fVs } = this.state;
  
     if (this.state.user.uid) {
+    
+     
+    
       if (this.state.fVs) {
         fVs.push({
           u_id: this.state.user.uid,
@@ -116,6 +120,7 @@ class Youtube extends React.Component {
           .ref("/videos/" + this.state.user.uid)
           .set(this.state.fVs);
       } 
+      
     }
      else {
       this.setState({
@@ -289,7 +294,7 @@ console.log('folowedVs',this.state.folowedVs)
                   </div>
                 </div>
               </div>
-            ))}
+            ))} 
           </div>
         </div>
         <div>
