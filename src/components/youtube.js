@@ -12,7 +12,7 @@ import ScrollUpButton from "react-scroll-up-button";
 import { MDBCol } from "mdbreact";
 import "bootstrap/dist/js/bootstrap.min.js";
 import bootbox from "bootbox";
-import SpinnerPage from "./loader";
+
 
 class Youtube extends React.Component {
   constructor(props) {
@@ -77,59 +77,53 @@ class Youtube extends React.Component {
     var target_id = event.target.id;
 
     bootbox.confirm("Are you sure?", function(result) {
-      if(result === true){
-      folowedVs.forEach(function(item) {
-        if (target_id !== item.v_id) {
-          fVideos.push(item);
-        }
-      });
-      if (fVideos) {
-        fire
-          .database()
-          .ref("/videos/" + uid)
-          .set(fVideos);
-      }
-    }
-    });
+      if (result === true) {
+        folowedVs.forEach(function(item) {
+          if (target_id !== item.v_id) {
+            fVideos.push(item);
+          }
+        });
 
+        if(fVideos.length === 0){
+          window.location.reload();
+          
+        }
+        if (fVideos) {
+          fire
+            .database()
+            .ref("/videos/" + uid)
+            .set(fVideos);
+        }
+      }
+    });
   };
 
-     createFollow (event) {
-
-      
-
-    
+  createFollow(event) {
     const { fVs } = this.state;
- 
+
     if (this.state.user.uid) {
-    
-     
-    
       if (this.state.fVs) {
         fVs.push({
           u_id: this.state.user.uid,
           v_id: event.target.id,
           v_img: event.target.dataset.id,
           v_title: event.target.dataset.title,
-          v_description: event.target.dataset.description,
-         
+          v_description: event.target.dataset.description
         });
         this.setState({ fVs: fVs });
         fire
           .database()
           .ref("/videos/" + this.state.user.uid)
           .set(this.state.fVs);
-      } 
-      
-    }
-     else {
+      }
+    } else {
       this.setState({
         modal: !this.state.modal
       });
     }
-}
+  }
 
-   getYoutubeVideos () {
+  getYoutubeVideos() {
     this.authListener();
     var that = this;
     var API_key = "AIzaSyDrr-_QwBWb_QWRp7Bacswfz0KeYDWbjIE";
@@ -142,13 +136,13 @@ class Youtube extends React.Component {
       channelID +
       "&part=snippet,id&order=date&maxResults=" +
       maxResults;
-     fetch(url)
+    fetch(url)
       .then(function(response) {
         if (response.status >= 400) {
           throw new Error("Bad response from server");
         }
-        
-        return    response.json();
+
+        return response.json();
       })
       .then(function(data) {
         // data.items.map((item, index) =>
@@ -204,7 +198,7 @@ class Youtube extends React.Component {
     if (loading) {
       return null;
     }
-console.log('folowedVs',this.state.folowedVs)
+    console.log("folowedVs", this.state.folowedVs);
     if (this.state.watch === false) {
       finematchvideo = this.state.videos;
     } else {
@@ -234,9 +228,10 @@ console.log('folowedVs',this.state.folowedVs)
                       this.setState({
                         isOpen: true,
                         videoId: item.id.videoId
-                      })}
+                      })
+                    }
                     src={item.snippet.thumbnails.high.url}
-                  />   
+                  />
                   <div className="card-body">
                     <h5>{item.snippet.title}</h5>
                     <p className="card-text">{item.snippet.description}</p>
@@ -244,8 +239,15 @@ console.log('folowedVs',this.state.folowedVs)
                   <div className="d-flex follow_btn justify-content-between align-items-center">
                     <div className="btn-group">
                       {(() => {
-                        if (this.state.user.uid != null && this.state.folowedVs) {
-                          if (this.state.folowedVs.find( folowedV => folowedV.v_id === item.id.videoId )) {
+                        if (
+                          this.state.user.uid != null &&
+                          this.state.folowedVs
+                        ) {
+                          if (
+                            this.state.folowedVs.find(
+                              folowedV => folowedV.v_id === item.id.videoId
+                            )
+                          ) {
                             return (
                               <input
                                 type="button"
@@ -266,8 +268,8 @@ console.log('folowedVs',this.state.folowedVs)
                                 id={item.id.videoId}
                                 data-id={item.snippet.thumbnails.high.url}
                                 data-title={item.snippet.title}
-                                data-description={item.snippet.description}   
-                                onClick= { this.createFollow.bind(this)}
+                                data-description={item.snippet.description}
+                                onClick={this.createFollow.bind(this)}
                                 value="Follow"
                               />
                             );
@@ -294,7 +296,7 @@ console.log('folowedVs',this.state.folowedVs)
                   </div>
                 </div>
               </div>
-            ))} 
+            ))}
           </div>
         </div>
         <div>

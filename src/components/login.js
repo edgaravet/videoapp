@@ -85,9 +85,11 @@ class Login extends React.Component {
               
                 
               </div>
-              { this.state.loading &&  <Spinner/>}
+              
             </div>
+            
           </form>
+          { this.state.loading &&  <Spinner/>}
         </div>
       </div>
     );

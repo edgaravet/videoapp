@@ -11,10 +11,10 @@ class Registration extends React.Component {
       lastname: "",
       email: "",
       password: "",
-      user:{},
+      user: {},
       confirm_password: "",
       message: "",
-      loading:false
+      loading: false
     };
   }
 
@@ -25,38 +25,41 @@ class Registration extends React.Component {
   }
 
   registr(e) {
-    e.preventDefault()
+    e.preventDefault();
     this.setState({
-      loading:true
-    })
+      loading: true
+    });
 
-   if(this.state.password !== this.state.confirm_password){
-     this.setState({message: "Password not corect, Please confirm Password!"})
-   }else{
-    fire
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {
-        this.setState({user:u,loading:false})
-        localStorage.setItem('user_login', u.email);
-        window.location.href = "/home"
-      })
-      .catch(error => {
-        this.setState({message:error.message,loading:false})
+    if (this.state.password !== this.state.confirm_password) {
+      this.setState({
+        message: "Password not corect, Please confirm Password!",
+        loading: !true
       });
+    } else {
+      fire
+        .auth()
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .then(u => {
+          this.setState({ user: u, loading: !true });
+          localStorage.setItem("user_login", u.email);
+          window.location.href = "/home";
+        })
+        .catch(error => {
+          this.setState({ message: error.message, loading: !true });
+        });
     }
   }
 
   render() {
-    if(localStorage.getItem('user_login')){
-      window.location.href = "/home"
+    if (localStorage.getItem("user_login")) {
+      window.location.href = "/home";
     }
     return (
       <div className="container">
         <div className="form_group">
-        <h1>Registration</h1>
+          <h1>Registration</h1>
           <form>
-          <label className="errorLable">{this.state.message}</label>
+            <label className="errorLable">{this.state.message}</label>
             <input
               onChange={this.handleChange.bind(this)}
               value={this.state.email}
@@ -65,7 +68,7 @@ class Registration extends React.Component {
               name="email"
               required
             />
-           
+
             <input
               onChange={this.handleChange.bind(this)}
               value={this.state.password}
@@ -75,7 +78,6 @@ class Registration extends React.Component {
               required
             />
 
-      
             <input
               onChange={this.handleChange.bind(this)}
               value={this.state.confirm_password}
@@ -93,7 +95,7 @@ class Registration extends React.Component {
               Register
             </button>
           </form>
-          { this.state.loading &&  <Spinner/>}
+          {this.state.loading && <Spinner />}
         </div>
       </div>
     );

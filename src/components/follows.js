@@ -2,11 +2,11 @@ import React from "react";
 import "../App.css";
 import fire from "./config";
 import ModalVideo from "react-modal-video";
-import 'bootstrap/dist/js/bootstrap.min.js';
+import "bootstrap/dist/js/bootstrap.min.js";
 import bootbox from "bootbox";
 
+
 class Follows extends React.Component {
- 
   constructor(props) {
     super(props);
     this.state = {
@@ -14,21 +14,36 @@ class Follows extends React.Component {
       user: {},
       loading: true,
       isOpen: false,
-      videoId: ""
+      videoId: "",
+      fVideos: [],
+      refresh: false
     };
   }
   unfollowVideo = event => {
+
+
+
+    
     var fVideos = [];
-    const {videos} = this.state;
+    const { videos } = this.state;
+
     var uid = this.state.user.uid;
-    var target_id = event.target.id
-    bootbox.confirm("Are you sure?", function(result){
-      if(result === true){
+    var target_id = event.target.id;
+    bootbox.confirm("Are you sure?", function(result) {
+      if (result === true) {
         videos.forEach(function(item) {
           if (target_id !== item.v_id) {
             fVideos.push(item);
           }
         });
+
+        if(fVideos.length === 0){
+          window.location.reload();
+          
+        }
+
+        console.log(fVideos);
+
         if (fVideos) {
           fire
             .database()
@@ -36,8 +51,7 @@ class Follows extends React.Component {
             .set(fVideos);
         }
       }
-    })
-  
+    });
   };
 
   componentDidMount() {
@@ -64,8 +78,8 @@ class Follows extends React.Component {
   }
 
   render() {
-    if(this.state.user == null || this.state.user.length === 0){
-      window.location.href = "/home"
+    if (this.state.user == null || this.state.user.length === 0) {
+      window.location.href = "/home";
     }
     const { loading } = this.state;
     if (loading) {
@@ -73,7 +87,6 @@ class Follows extends React.Component {
     }
     return (
       <div className="container">
-     
         {(() => {
           if (this.state.videos) {
             return (
@@ -89,7 +102,7 @@ class Follows extends React.Component {
                         <img
                           alt="img"
                           className="img-thumbnail"
-                        onClick={() =>
+                          onClick={() =>
                             this.setState({
                               isOpen: true,
                               videoId: item.v_id
@@ -110,8 +123,8 @@ class Follows extends React.Component {
                               type="button"
                               value="Unfollow"
                             />
-                            </div>
-                            {/* <span>{item.v_count+ ' views'}</span> */}
+                          </div>
+                          {/* <span>{item.v_count+ ' views'}</span> */}
                         </div>
                         <div>
                           <ModalVideo
@@ -130,8 +143,6 @@ class Follows extends React.Component {
         })()}
       </div>
     );
-   
-  
   }
 }
 
