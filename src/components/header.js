@@ -1,5 +1,6 @@
 import React from "react";
 import "../App.css";
+import "../styles/header.css"
 import fire from "./config";
 import Registration from "./registration";
 import Home from "./home";

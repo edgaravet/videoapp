@@ -12,7 +12,9 @@ import ScrollUpButton from "react-scroll-up-button";
 import { MDBCol } from "mdbreact";
 import "bootstrap/dist/js/bootstrap.min.js";
 import bootbox from "bootbox";
-
+import "../styles/search.css";
+import "../styles/modal.css";
+import "../styles/video.css";
 
 class Youtube extends React.Component {
   constructor(props) {
@@ -84,9 +86,8 @@ class Youtube extends React.Component {
           }
         });
 
-        if(fVideos.length === 0){
+        if (fVideos.length === 0) {
           window.location.reload();
-          
         }
         if (fVideos) {
           fire
@@ -145,23 +146,6 @@ class Youtube extends React.Component {
         return response.json();
       })
       .then(function(data) {
-        // data.items.map((item, index) =>
-        //   fetch(
-        //     "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,statistics&id=" +
-        //       item.id.videoId +
-        //       "&key=" +
-        //       API_key
-        //   )
-        //     .then(res => res.json())
-        //     .then(
-        //       result => {
-        //         item.viewCount = result.items[0].statistics.viewCount;
-        //       },
-        //       error => {
-        //         console.log(error);
-        //       }
-        //     )
-        // );
         that.setState({ videos: data.items, loading: false });
       })
       .catch(error => {
@@ -289,15 +273,14 @@ class Youtube extends React.Component {
                           );
                         }
                       })()}
+                  
                     </div>
-                    {/* <small className="text-muted">
-                      {item.viewCount + " views"}
-                    </small> */}
                   </div>
                 </div>
               </div>
             ))}
           </div>
+        
         </div>
         <div>
           <ModalVideo
