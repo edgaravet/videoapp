@@ -8,14 +8,14 @@ class Login extends React.Component {
     this.state = {
       email: "",
       password: "",
-      user:{},
+      user: {},
       message: null,
-      loading:false
+      loading: false
     };
   }
 
   regist(e) {
-    window.location.href = "/registration"
+    window.location.href = "/registration";
   }
   handleChange(e) {
     this.setState({
@@ -26,36 +26,34 @@ class Login extends React.Component {
   sign = e => {
     e.preventDefault();
     this.setState({
-      loading:true
-    })
-
-  
+      loading: true
+    });
 
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(u => {
-        
-        localStorage.setItem('user_login', u.email)
-        window.location.href = "/home"
+        localStorage.setItem("user_login", u.email);
+        window.location.href = "/home";
       })
       .catch(error => {
         this.setState({
           message: error.message,
-          loading:false
+          loading: false
         });
         console.log(error);
       });
-
   };
 
   render() {
-    if(localStorage.getItem('user_login')){
-      window.location.href = "/home"
+    if (localStorage.getItem("user_login")) {
+      window.location.href = "/home";
     }
     return (
+     
       <div className="container">
         <div className="form_group">
+        <h1>Log In</h1>
           <form>
             <label className="errorLable">{this.state.message}</label>
             <input
@@ -80,16 +78,12 @@ class Login extends React.Component {
                   type="button"
                   className="registerbtn"
                 >
+                  {this.state.loading && <Spinner />}
                   Log In
                 </button>
-              
-                
               </div>
-              
             </div>
-            
           </form>
-          { this.state.loading &&  <Spinner/>}
         </div>
       </div>
     );

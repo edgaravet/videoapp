@@ -15,7 +15,7 @@ import bootbox from "bootbox";
 import "../styles/search.css";
 import "../styles/modal.css";
 import "../styles/video.css";
-import Slider from "./Carousel";
+
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 class Youtube extends React.Component {
@@ -74,10 +74,10 @@ class Youtube extends React.Component {
     this.setState({ isOpen: true });
   }
   unfollowVideo = event => {
-    var fVideos = [];
-    var folowedVs = this.state.folowedVs;
-    var uid = this.state.user.uid;
-    var target_id = event.target.id;
+    let fVideos = [];
+    let folowedVs = this.state.folowedVs;
+    let uid = this.state.user.uid;
+    let target_id = event.target.id;
 
     bootbox.confirm("Are you sure?", function(result) {
       if (result === true) {
@@ -127,11 +127,11 @@ class Youtube extends React.Component {
 
   getYoutubeVideos() {
     this.authListener();
-    var that = this;
-    var API_key = "AIzaSyDrr-_QwBWb_QWRp7Bacswfz0KeYDWbjIE";
-    var channelID = "UCPPPrnT5080hPMxK1N4QSjA";
-    var maxResults = 21;
-    var url =
+    let that = this;
+    let API_key = "AIzaSyDrr-_QwBWb_QWRp7Bacswfz0KeYDWbjIE";
+    let channelID = "UCPPPrnT5080hPMxK1N4QSjA";
+    let maxResults = 21;
+    let url =
       "https://www.googleapis.com/youtube/v3/search?key=" +
       API_key +
       "&channelId=" +
@@ -203,7 +203,7 @@ class Youtube extends React.Component {
             />
           </MDBCol>
 
-          {/* { <Slider imgUrl = {this.state.videos}/> } */}
+          
           <h1 className="videos">Videos</h1>
           <div className="container">
             <div className="row">

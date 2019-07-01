@@ -1,7 +1,7 @@
 import React from "react";
-import "../App.css";
 import fire from "./config";
 import Spinner from "./loader";
+import "../styles/header.css";
 
 class Registration extends React.Component {
   constructor(props) {
@@ -93,9 +93,10 @@ class Registration extends React.Component {
               className="registerbtn"
             >
               Register
+              {this.state.loading && <Spinner />}
             </button>
           </form>
-          {this.state.loading && <Spinner />}
+          
         </div>
       </div>
     );

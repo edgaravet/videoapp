@@ -1,6 +1,6 @@
 import React from "react";
 import "../App.css";
-import "../styles/header.css"
+import "../styles/header.css";
 import fire from "./config";
 import Registration from "./registration";
 import Home from "./home";
@@ -9,12 +9,12 @@ import Follows from "./follows";
 import Login from "./login";
 import { IoIosPerson } from "react-icons/io";
 
-const image = require('../images/logo.jpg')
+
 
 class Header extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       user: {},
       firstname: "",
@@ -22,7 +22,6 @@ class Header extends React.Component {
       text: ""
     };
   }
- 
 
   componentDidMount() {
     this.authListener();
@@ -45,8 +44,7 @@ class Header extends React.Component {
       .then(u => {})
       .catch(function(err) {});
     this.logButton();
-    localStorage.removeItem('user_login');
-
+    localStorage.removeItem("user_login");
   };
 
   folowBtn = e => {
@@ -73,9 +71,7 @@ class Header extends React.Component {
     }
   };
 
-  clickUser = () => {
-    alert("fgddf");
-  };
+
 
   logButton = e => {
     if (this.state.user.email != null) {
@@ -100,18 +96,18 @@ class Header extends React.Component {
 
   render() {
     return (
-    
       <Router>
-    
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to = '/home'>
-         {/* <img className = 'logoimg' src="https://cdn5.f-cdn.com/contestentries/969990/21115755/58c411bb43f9e_thumb900.jpg" alt = 'logo' /> */}
+          <Link to="/home">
+            
 
-         {/* <img className = 'logoimg' src={image} alt = 'logo' /> */}
-         </Link>
-          <Link className="navbar-brand" to="/home"> Home</Link>
+       
+          </Link>
+          <Link className="navbar-brand" to="/home">
+            {" "}
+            Home
+          </Link>
 
-      
           <button
             className="navbar-toggler"
             type="button"
@@ -147,7 +143,7 @@ class Header extends React.Component {
           </div>
         </nav>
         <Route exact path="/" render={() => <Home />} />
-        <Route path="/home" render={() => <Home />}/>
+        <Route path="/home" render={() => <Home />} />
         <Route path="/follows" render={() => <Follows />} />
         <Route path="/registration" render={() => <Registration />} />
         <Route path="/login" render={() => <Login />} />

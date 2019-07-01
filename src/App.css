@@ -54,3 +54,7 @@ a {
 .pt-4 {
   color: blue;
 }
+
+.spinner-border{
+  margin-right: 15px;
+}
