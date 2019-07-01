@@ -19,6 +19,9 @@ class Follows extends React.Component {
       refresh: false
     };
   }
+
+  
+
   unfollowVideo = event => {
     let fVideos = [];
     const { videos } = this.state;
@@ -37,7 +40,7 @@ class Follows extends React.Component {
           window.location.reload();
         }
 
-        console.log(fVideos);
+    
 
         if (fVideos) {
           fire

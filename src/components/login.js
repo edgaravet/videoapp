@@ -14,16 +14,16 @@ class Login extends React.Component {
     };
   }
 
-  regist(e) {
+  regist = e => {
     window.location.href = "/registration";
-  }
+  };
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
-  sign = e => {
+  signIn = e => {
     e.preventDefault();
     this.setState({
       loading: true
@@ -50,10 +50,9 @@ class Login extends React.Component {
       window.location.href = "/home";
     }
     return (
-     
       <div className="container">
         <div className="form_group">
-        <h1>Log In</h1>
+          <h1>Log In</h1>
           <form>
             <label className="errorLable">{this.state.message}</label>
             <input
@@ -74,7 +73,7 @@ class Login extends React.Component {
             <div className="row">
               <div className="btn-group col-12">
                 <button
-                  onClick={this.sign.bind(this)}
+                  onClick={this.signIn.bind(this)}
                   type="button"
                   className="registerbtn"
                 >

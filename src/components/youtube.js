@@ -52,6 +52,8 @@ class Youtube extends React.Component {
     });
   };
 
+  /* ---------------- Search function ---------------- */
+
   handleSearch = e => {
     this.setState({
       watch: true
@@ -100,6 +102,8 @@ class Youtube extends React.Component {
     });
   };
 
+  /* ---------------- Create User Follow Video ---------------    */
+
   createFollow(event) {
     const { fVs } = this.state;
 
@@ -124,6 +128,8 @@ class Youtube extends React.Component {
       });
     }
   }
+
+/*--------------------------------Get video from Youtube  --------------------*/
 
   getYoutubeVideos() {
     this.authListener();

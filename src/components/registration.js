@@ -24,6 +24,8 @@ class Registration extends React.Component {
     });
   }
 
+  /* --------------- Registration function  ------------------   */
+
   registr(e) {
     e.preventDefault();
     this.setState({
