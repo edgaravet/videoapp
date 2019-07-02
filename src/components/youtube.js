@@ -58,8 +58,8 @@ class Youtube extends React.Component {
     this.setState({
       watch: true
     });
-    let val = e.target.value;
-    let matches = this.state.videos.filter(v => v.snippet.title.includes(val));
+    let val = e.target.value.toLowerCase();
+    let matches = this.state.videos.filter(v => v.snippet.title.toLowerCase().includes(val));
     this.setState({
       matches: matches
     });
@@ -75,6 +75,10 @@ class Youtube extends React.Component {
   openModal() {
     this.setState({ isOpen: true });
   }
+
+
+ /*--------------- User Video Unfollow Function ---------------       */
+
   unfollowVideo = event => {
     let fVideos = [];
     let folowedVs = this.state.folowedVs;
@@ -105,6 +109,7 @@ class Youtube extends React.Component {
   /* ---------------- Create User Follow Video ---------------    */
 
   createFollow(event) {
+    
     const { fVs } = this.state;
 
     if (this.state.user.uid) {

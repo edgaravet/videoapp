@@ -1,1 +1,2 @@
 [0615/194052.747:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0
+[0702/135435.306:WARNING:minidump_to_upload_parameters.cc(67)] duplicate annotation name metrics_client_id, discarding value 9ce143d3448a4dde9bdfaac4e72527e1

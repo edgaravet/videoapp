@@ -14,7 +14,7 @@ class Login extends React.Component {
     };
   }
 
-  regist = e => {
+  regist = () => {
     window.location.href = "/registration";
   };
   handleChange(e) {

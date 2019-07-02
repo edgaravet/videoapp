@@ -8,8 +8,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Follows from "./follows";
 import Login from "./login";
 import { IoIosPerson } from "react-icons/io";
-
-
+import Modal from 'react-responsive-modal';
 
 class Header extends React.Component {
   constructor(props) {
@@ -20,6 +19,7 @@ class Header extends React.Component {
       firstname: "",
       lastname: "",
       text: ""
+     
     };
   }
 
@@ -45,6 +45,7 @@ class Header extends React.Component {
       .catch(function(err) {});
     this.logButton();
     localStorage.removeItem("user_login");
+ 
   };
 
   folowBtn = e => {
@@ -59,6 +60,7 @@ class Header extends React.Component {
     }
   };
 
+
   regButton = e => {
     if (this.state.user.email == null) {
       return (
@@ -71,7 +73,7 @@ class Header extends React.Component {
     }
   };
 
-
+ 
 
   logButton = e => {
     if (this.state.user.email != null) {
@@ -95,14 +97,11 @@ class Header extends React.Component {
   };
 
   render() {
+    const { open } = this.state;
     return (
       <Router>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to="/home">
-            
-
-       
-          </Link>
+          <Link to="/home" />
           <Link className="navbar-brand" to="/home">
             {" "}
             Home
@@ -133,7 +132,7 @@ class Header extends React.Component {
                     <div className="border">
                       <li className="nav-link">{this.state.user.email}</li>
                       <span className="user-icon">
-                        <IoIosPerson onDoubleClick={this.clickUser} />
+                        <IoIosPerson onClick={this.onOpenModal}/>
                       </span>
                     </div>
                   );
