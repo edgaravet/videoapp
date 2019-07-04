@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Follows from "./follows";
 import Login from "./login";
 import { IoIosPerson } from "react-icons/io";
-import Modal from 'react-responsive-modal';
+
 
 class Header extends React.Component {
   constructor(props) {
@@ -97,7 +97,7 @@ class Header extends React.Component {
   };
 
   render() {
-    const { open } = this.state;
+   
     return (
       <Router>
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
