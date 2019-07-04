@@ -109,11 +109,13 @@ class Youtube extends React.Component {
   /* ---------------- Create User Follow Video ---------------    */
 
   createFollow(event) {
-    
+  
     const { fVs } = this.state;
 
     if (this.state.user.uid) {
+     
       if (this.state.fVs) {
+        console.log(fVs)
         fVs.push({
           u_id: this.state.user.uid,
           v_id: event.target.id,
@@ -122,10 +124,11 @@ class Youtube extends React.Component {
           v_description: event.target.dataset.description
         });
         this.setState({ fVs: fVs });
+       
         fire
           .database()
           .ref("/videos/" + this.state.user.uid)
-          .set(this.state.fVs);
+          .set(this.state. fVs);
       }
     } else {
       this.setState({
@@ -133,7 +136,6 @@ class Youtube extends React.Component {
       });
     }
   }
-
 /*--------------------------------Get video from Youtube  --------------------*/
 
   getYoutubeVideos() {
@@ -189,7 +191,7 @@ class Youtube extends React.Component {
   }
 
   render() {
-    let finematchvideo = [];
+    var finematchvideo = [];
     const { loading } = this.state;
     if (loading) {
       return null;
