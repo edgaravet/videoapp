@@ -24,15 +24,16 @@ class Youtube extends React.Component {
     this.state = {
       videos: [],
       matches: [],
-      folowedvs: [],
-      fVideos: [],
+      folowedVs: [],
+      fvids: [],
       user: {},
       modal: false,
       disabled: false,
       loading: true,
       watch: false,
       isOpen: false,
-      videoId: null
+      videoId: null,
+      login: false
     };
     this.openModal = this.openModal.bind(this);
   }
@@ -81,13 +82,13 @@ class Youtube extends React.Component {
 
   unfollowVideo = event => {
     let fVideos = [];
-    let folowedV = this.state.folowedvs;
+    let folowedVs = this.state.folowedVs;
     let uid = this.state.user.uid;
     let target_id = event.target.id;
 
     bootbox.confirm("Are you sure?", function(result) {
       if (result === true) {
-        folowedV.forEach(function(item) {
+        folowedVs.forEach(function(item) {
           if (target_id !== item.v_id) {
             fVideos.push(item);
           }
@@ -110,24 +111,22 @@ class Youtube extends React.Component {
 
   createFollow(event) {
     console.log(this.state)
-    const { fVideos } = this.state;
+    const { fvids } = this.state;
+
     if (this.state.user.uid) {
-     
-      if (this.state.fVideos) {
-        console.log(fVideos)
-        fVideos.push({
+      if (this.state.fvids) {
+        fvids.push({
           u_id: this.state.user.uid,
           v_id: event.target.id,
           v_img: event.target.dataset.id,
           v_title: event.target.dataset.title,
           v_description: event.target.dataset.description
         });
-        this.setState({ fVideos: fVideos });
-       
+        this.setState({ fvids: fvids });
         fire
           .database()
           .ref("/videos/" + this.state.user.uid)
-          .set(this.state.fVideos);
+          .set(this.state.fvids);
       }
     } else {
       this.setState({
@@ -135,7 +134,6 @@ class Youtube extends React.Component {
       });
     }
   }
-
 
 /*--------------------------------Get video from Youtube  --------------------*/
 
@@ -169,18 +167,22 @@ class Youtube extends React.Component {
 
     fire.auth().onAuthStateChanged(user => {
       if (user) {
+        var snapshotarr = [];
         fire
           .database()
           .ref("/")
           .on("value", snapshot => {
             if (snapshot.val()) {
               Object.keys(snapshot.val().videos).map((key, index) =>
+                snapshotarr = snapshot.val().videos[user.uid]
+              );
+              if (snapshotarr != undefined) {
                 this.setState({
-                  folowedvs: snapshot.val().videos[user.uid],
-                  fVs: snapshot.val().videos[user.uid],
+                  folowedVs: snapshotarr,
+                  fvids: snapshotarr,
                   loading: false
                 })
-              );
+              }
             }
           });
       }
@@ -192,7 +194,8 @@ class Youtube extends React.Component {
   }
 
   render() {
-    var finematchvideo = [];
+    
+    let finematchvideo = [];
     const { loading } = this.state;
     if (loading) {
       return null;
@@ -216,6 +219,7 @@ class Youtube extends React.Component {
               value={this.state.value}
             />
           </MDBCol>
+
           
           <h1 className="videos">Videos</h1>
           <div className="container">
@@ -241,8 +245,15 @@ class Youtube extends React.Component {
                     <div className="d-flex follow_btn justify-content-between align-items-center">
                       <div className="btn-group">
                         {(() => {
-                          if (this.state.user.uid != null && this.state.folowedvs) {
-                            if (this.state.folowedvs.find(folowedV => folowedV.v_id === item.id.videoId)) {
+                          if (
+                            this.state.user.uid != null &&
+                            this.state.folowedVs
+                          ) {
+                            if (
+                              this.state.folowedVs.find(
+                                folowedV => folowedV.v_id === item.id.videoId
+                              )
+                            ) {
                               return (
                                 <input
                                   type="button"
