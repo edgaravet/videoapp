@@ -24,8 +24,8 @@ class Youtube extends React.Component {
     this.state = {
       videos: [],
       matches: [],
-      folowedVs: [],
-      fVs: [],
+      folowedvs: [],
+      fVideos: [],
       user: {},
       modal: false,
       disabled: false,
@@ -81,13 +81,13 @@ class Youtube extends React.Component {
 
   unfollowVideo = event => {
     let fVideos = [];
-    let folowedVs = this.state.folowedVs;
+    let folowedV = this.state.folowedvs;
     let uid = this.state.user.uid;
     let target_id = event.target.id;
 
     bootbox.confirm("Are you sure?", function(result) {
       if (result === true) {
-        folowedVs.forEach(function(item) {
+        folowedV.forEach(function(item) {
           if (target_id !== item.v_id) {
             fVideos.push(item);
           }
@@ -109,23 +109,25 @@ class Youtube extends React.Component {
   /* ---------------- Create User Follow Video ---------------    */
 
   createFollow(event) {
-    
-    const { fVs } = this.state;
-
+    console.log(this.state)
+    const { fVideos } = this.state;
     if (this.state.user.uid) {
-      if (this.state.fVs) {
-        fVs.push({
+     
+      if (this.state.fVideos) {
+        console.log(fVideos)
+        fVideos.push({
           u_id: this.state.user.uid,
           v_id: event.target.id,
           v_img: event.target.dataset.id,
           v_title: event.target.dataset.title,
           v_description: event.target.dataset.description
         });
-        this.setState({ fVs: fVs });
+        this.setState({ fVideos: fVideos });
+       
         fire
           .database()
           .ref("/videos/" + this.state.user.uid)
-          .set(this.state.fVs);
+          .set(this.state.fVideos);
       }
     } else {
       this.setState({
@@ -174,7 +176,7 @@ class Youtube extends React.Component {
             if (snapshot.val()) {
               Object.keys(snapshot.val().videos).map((key, index) =>
                 this.setState({
-                  folowedVs: snapshot.val().videos[user.uid],
+                  folowedvs: snapshot.val().videos[user.uid],
                   fVs: snapshot.val().videos[user.uid],
                   loading: false
                 })
@@ -190,7 +192,7 @@ class Youtube extends React.Component {
   }
 
   render() {
-    let finematchvideo = [];
+    var finematchvideo = [];
     const { loading } = this.state;
     if (loading) {
       return null;
@@ -214,7 +216,6 @@ class Youtube extends React.Component {
               value={this.state.value}
             />
           </MDBCol>
-
           
           <h1 className="videos">Videos</h1>
           <div className="container">
@@ -240,15 +241,8 @@ class Youtube extends React.Component {
                     <div className="d-flex follow_btn justify-content-between align-items-center">
                       <div className="btn-group">
                         {(() => {
-                          if (
-                            this.state.user.uid != null &&
-                            this.state.folowedVs
-                          ) {
-                            if (
-                              this.state.folowedVs.find(
-                                folowedV => folowedV.v_id === item.id.videoId
-                              )
-                            ) {
+                          if (this.state.user.uid != null && this.state.folowedvs) {
+                            if (this.state.folowedvs.find(folowedV => folowedV.v_id === item.id.videoId)) {
                               return (
                                 <input
                                   type="button"
